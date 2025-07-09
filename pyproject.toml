@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [project.scripts]
-ndrwahltexte = "ndrwahltexte:ndrwahltexte"
+ndrwahltexte = "ndrwahltexte.ndrwahltexte:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["ndrwahltexte"]

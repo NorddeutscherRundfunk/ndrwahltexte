@@ -68,9 +68,7 @@ def write_election_text(FILENAME):
     text = satz1
     return text
 
-
-#%% hier startet das Hauptprogramm
-if __name__ == "__main__":
+def main():
     parser = ArgumentParser()
     parser.add_argument("-f", "--file", required = True, dest="filename",
                     help="election file", metavar="FILE")
@@ -91,5 +89,9 @@ if __name__ == "__main__":
     print(write_election_text(ELECTION_FILE))
     
     log.info('ndrwahltexte.py done')
+
+#%% hier startet das Hauptprogramm
+if __name__ == "__main__":
+    main()
 
 # %%
