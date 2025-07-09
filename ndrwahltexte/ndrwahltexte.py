@@ -10,6 +10,7 @@ import json
 import pandas as pd
 from argparse import ArgumentParser
 import logging as log
+from pathlib import Path
 
 #%% load global variables
 def removekey(d, key):
@@ -17,7 +18,12 @@ def removekey(d, key):
     del r[key]
     return r
 
-PARTEI_GRAMMATIK = pd.read_csv('data/raw/parteigrammatik.csv',sep=';').set_index('Kurzname')
+cwd = Path.cwd()
+mod_path = Path(__file__).parent
+partei_rel_path = 'data/raw/parteigrammatik.csv'
+partei_src_path = (mod_path / partei_rel_path).resolve()
+
+PARTEI_GRAMMATIK = pd.read_csv(partei_src_path,sep=';').set_index('Kurzname')
 
 def load_file(FILENAME):
     with open(FILENAME) as f:
