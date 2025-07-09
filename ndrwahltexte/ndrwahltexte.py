@@ -32,7 +32,7 @@ def load_file(FILENAME):
     return file_data
 
 def load_election_data(FILENAME):
-    file_data = load_file(ELECTION_FILE)
+    file_data = load_file(FILENAME)
     try:
         election_data = file_data.get('wahl').copy()
         election_data = removekey(election_data,'ergebnis').copy()
