@@ -9,13 +9,13 @@ A command-line tool to process election data from JSON files and output relevant
 You can install the package directly from GitHub using pip:
 
 ```bash
-pip install git+https://github.com/yourusername/ndrwahltexte.git
+pip install git+https://github.com/NorddeutscherRundfunk/ndrwahltexte.git
 ```
 
 Or clone the repo and install locally:
 
 ```bash
-git clone https://github.com/yourusername/ndrwahltexte.git
+git clone https://github.com/NorddeutscherRundfunk/ndrwahltexte.git
 cd ndrwahltexte
 pip install .
 ```
