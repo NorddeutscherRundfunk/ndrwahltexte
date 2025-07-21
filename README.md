@@ -40,7 +40,7 @@ Outputs are written as JSON data with generated text under:
   "wahl": {
     "ergebnis": {
       "texte": {
-        "Titel"
+        "Titel": ""
       }
     }
   }
