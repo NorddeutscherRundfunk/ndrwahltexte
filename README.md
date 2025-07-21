@@ -47,6 +47,7 @@ Outputs are written as JSON data with generated text under:
 }
 
 Errors are output to stderr as:
+
 {
   "error": {
     "type": "",
