@@ -22,14 +22,35 @@ pip install .
 
 ## Usage
 
-Run the command-line tool ndrwahltexte with the required -f (or --file) option to specify the JSON file to process:
+This tool reads a JSON object from standard input (stdin) and prints processed output to the console (stdout). Errors are printed to stderr
 
+You can use it by piping JSON data into the command:
 ```bash
-ndrwahltexte -f path/to/election.json
+echo '{"district": "Hamburg", "votes": {"partyA": 1234, "partyB": 5678}}' | ndrwahltexte
 ```
 
-Enable verbose output with the -v flag:
-
+Or by piping data from a file:
 ```bash
-ndrwahltexte -f path/to/election.json -v
+cat election.json | ndrwahltexte
 ```
+
+Outputs are written as JSON data with generated text under:
+
+{
+  "wahl": {
+    "ergebnis": {
+      "texte": {
+        "Titel"
+      }
+    }
+  }
+}
+
+Errors are output to stderr as:
+{
+  "error": {
+    "type": "",
+    "message": ")",
+    "traceback": ""
+  }
+}

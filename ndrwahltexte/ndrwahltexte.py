@@ -11,6 +11,8 @@ import pandas as pd
 from argparse import ArgumentParser
 import logging as log
 from pathlib import Path
+import sys
+import traceback
 
 #%% load global variables
 def removekey(d, key):
@@ -25,14 +27,18 @@ partei_src_path = (mod_path / partei_rel_path).resolve()
 
 PARTEI_GRAMMATIK = pd.read_csv(partei_src_path,sep=';').set_index('Kurzname')
 
-def load_file(FILENAME):
-    with open(FILENAME) as f:
-        file_data = json.load(f)
-    log.info('file loaded successfully')
-    return file_data
+def write_error(e):
+    error_obj = {
+        "error": {
+            "type": type(e).__name__,
+            "message": str(e),
+            "traceback": traceback.format_exc()
+        }
+    }
+    print(json.dumps(error_obj, indent=2), file=sys.stderr)
 
-def load_election_data(FILENAME):
-    file_data = load_file(FILENAME)
+def load_election_data(data):
+    file_data = data
     try:
         election_data = file_data.get('wahl').copy()
         election_data = removekey(election_data,'ergebnis').copy()
@@ -47,12 +53,12 @@ def load_election_data(FILENAME):
         
         log.info('election data extracted successfully')
         return election_data, results_data, candidate_df
-    except:
-        log.err('there was a problem with the election data')
-        return None
+    except Exception as e:
+        write_error(e)
+        sys.exit(1)
 
-def analyse_election_data(FILENAME):
-    election_data, results_data, candidate_df = load_election_data(FILENAME)
+def analyse_election_data(data):
+    election_data, results_data, candidate_df = load_election_data(data)
     erg_dict = {'ortsname' : election_data['gks_name'].split(',')[0],
             'gewinner_partei': candidate_df.at[0,'partei'],
            'gewinner_prozent' : candidate_df.at[0,'prozent'],
@@ -62,34 +68,22 @@ def analyse_election_data(FILENAME):
     log.info('election data analysed successfully')
     return erg_dict
 
-def write_election_text(FILENAME):
-    erg_dict = analyse_election_data(FILENAME)
-    satz1 = "Bei der niedersächsischen Kommunalwahl 2026 in {ort} gingen die meisten Zweitstimmen an {gewinner_partei}.".format(ort = erg_dict['ortsname'], gewinner_partei = PARTEI_GRAMMATIK.at[erg_dict['gewinner_partei'],'Artikel NomSin + Parteiname'])
-    text = satz1
-    return text
+def write_election_text(data):
+    erg_dict = analyse_election_data(data)
+    satz1 = "In {ort} gingen die meisten Zweitstimmen an {gewinner_partei}.".format(ort = erg_dict['ortsname'], gewinner_partei = PARTEI_GRAMMATIK.at[erg_dict['gewinner_partei'],'Artikel NomSin + Parteiname'])
+    data['wahl']['ergebnis'].setdefault("texte", {})['Titel']=satz1
+    return data
 
 def main():
-    parser = ArgumentParser()
-    parser.add_argument("-f", "--file", required = True, dest="filename",
-                    help="election file", metavar="FILE")
+    try:
+        data = json.load(sys.stdin)
+    except Exception as e:
+        write_error(e)
+        sys.exit(1)
+        
+    new_data = write_election_text(data)
+    json.dump(new_data, sys.stdout, indent=2)
     
-    parser.add_argument("-v", "--verbose",
-                    action="store_true", dest="verbose", default=False,
-                    help="print status messages to stdout")
-    
-    args = parser.parse_args()
-    
-    if args.verbose:
-        log.basicConfig(format="%(levelname)s: %(message)s", level=log.DEBUG)
-        log.info("Verbose output.")
-    else:
-        log.basicConfig(format="%(levelname)s: %(message)s")
-    
-    ELECTION_FILE = args.filename
-    print(write_election_text(ELECTION_FILE))
-    
-    log.info('ndrwahltexte.py done')
-
 #%% hier startet das Hauptprogramm
 if __name__ == "__main__":
     main()
