@@ -26,12 +26,12 @@ This tool reads a JSON object from standard input (stdin) and prints processed o
 
 You can use it by piping JSON data into the command:
 ```bash
-echo '{"district": "Hamburg", "votes": {"partyA": 1234, "partyB": 5678}}' | ndrwahltexte
+echo '{"wahl": "" }}' | ndrwahltexte
 ```
 
 Or by piping data from a file:
 ```bash
-cat election.json | ndrwahltexte
+cat wahl.json | ndrwahltexte
 ```
 
 Outputs are written as JSON data with generated text under:
