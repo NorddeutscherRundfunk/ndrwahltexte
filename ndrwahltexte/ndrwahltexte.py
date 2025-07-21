@@ -9,7 +9,6 @@
 import json
 import pandas as pd
 from argparse import ArgumentParser
-import logging as log
 from pathlib import Path
 import sys
 import traceback
@@ -51,7 +50,6 @@ def load_election_data(data):
         candidate_df = pd.DataFrame(candidate_data).merge(pd.DataFrame(candidate_ref), on=['kandidatur_id','pos'], how='left')
         candidate_df = candidate_df.sort_values('prozent', ascending=False).reset_index(drop=True)
         
-        log.info('election data extracted successfully')
         return election_data, results_data, candidate_df
     except Exception as e:
         write_error(e)
@@ -65,7 +63,6 @@ def analyse_election_data(data):
             'zweite_partei': candidate_df.at[1,'partei'],
            'zweite_prozent' : candidate_df.at[1,'prozent'],
            }
-    log.info('election data analysed successfully')
     return erg_dict
 
 def write_election_text(data):
