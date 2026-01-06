@@ -1,32 +1,23 @@
 ########################
 #
 # Dieses Script konvertiert Wahlergebnis-Daten in Fließtext
+# Verwendet robotext.TemplateEngine für Textgenerierung
 # -> l.sander.fm@ndr.de 
 # 
 #########################
 
-#%% load libraries
 import json
-import pandas as pd
-from argparse import ArgumentParser
-from pathlib import Path
 import sys
 import traceback
+import pandas as pd
+from pathlib import Path
 
-#%% load global variables
-def removekey(d, key):
-    r = dict(d)
-    del r[key]
-    return r
+from .robotext import TemplateEngine
+from .params import TEMPLATES, CORRECTIONS
 
-cwd = Path.cwd()
-mod_path = Path(__file__).parent
-partei_rel_path = 'data/raw/parteigrammatik.csv'
-partei_src_path = (mod_path / partei_rel_path).resolve()
-
-PARTEI_GRAMMATIK = pd.read_csv(partei_src_path,sep=';').set_index('Kurzname')
 
 def write_error(e):
+    """Gibt Fehler als JSON auf stderr aus."""
     error_obj = {
         "error": {
             "type": type(e).__name__,
@@ -36,18 +27,30 @@ def write_error(e):
     }
     print(json.dumps(error_obj, indent=2), file=sys.stderr)
 
-def load_election_data(data):
-    file_data = data
-    try:
-        election_data = file_data.get('wahl').copy()
-        election_data = removekey(election_data,'ergebnis').copy()
-        election_data = removekey(election_data,'kandidaten').copy()
 
-        results_data = file_data.get('wahl').get('ergebnis').copy()
+def removekey(d, key):
+    """Entfernt einen Schlüssel aus einem Dictionary und gibt eine Kopie zurück."""
+    r = dict(d)
+    del r[key]
+    return r
+
+
+def load_election_data(data):
+    """Lädt und verarbeitet Wahldaten aus dem JSON-Input."""
+    try:
+        election_data = data.get('wahl').copy()
+        election_data = removekey(election_data, 'ergebnis').copy()
+        election_data = removekey(election_data, 'kandidaten').copy()
+
+        results_data = data.get('wahl').get('ergebnis').copy()
         
-        candidate_data = file_data.get('wahl').get('ergebnis').get('kandidaten').copy()
-        candidate_ref = file_data.get('wahl').get('kandidaten').copy()
-        candidate_df = pd.DataFrame(candidate_data).merge(pd.DataFrame(candidate_ref), on=['kandidatur_id','pos'], how='left')
+        candidate_data = data.get('wahl').get('ergebnis').get('kandidaten').copy()
+        candidate_ref = data.get('wahl').get('kandidaten').copy()
+        candidate_df = pd.DataFrame(candidate_data).merge(
+            pd.DataFrame(candidate_ref), 
+            on=['kandidatur_id', 'pos'], 
+            how='left'
+        )
         candidate_df = candidate_df.sort_values('prozent', ascending=False).reset_index(drop=True)
         
         return election_data, results_data, candidate_df
@@ -55,21 +58,40 @@ def load_election_data(data):
         write_error(e)
         sys.exit(1)
 
+
 def analyse_election_data(data):
+    """Analysiert Wahldaten und erstellt ein Dictionary mit Variablen für Templates."""
     election_data, results_data, candidate_df = load_election_data(data)
-    erg_dict = {'ortsname' : election_data['gks_name'].split(',')[0],
-            'gewinner_partei': candidate_df.at[0,'partei'],
-           'gewinner_prozent' : candidate_df.at[0,'prozent'],
-            'zweite_partei': candidate_df.at[1,'partei'],
-           'zweite_prozent' : candidate_df.at[1,'prozent'],
-           }
-    return erg_dict
+    
+    variables = {
+        'ortsname': election_data['gks_name'].split(',')[0],
+        'gewinner_partei': candidate_df.at[0, 'partei'],
+        'gewinner_prozent': candidate_df.at[0, 'prozent'],
+        'zweite_partei': candidate_df.at[1, 'partei'],
+        'zweite_prozent': candidate_df.at[1, 'prozent'],
+    }
+    return variables
+
 
 def write_election_text(data):
-    erg_dict = analyse_election_data(data)
-    satz1 = "In {ort} gingen die meisten Zweitstimmen an {gewinner_partei}.".format(ort = erg_dict['ortsname'], gewinner_partei = PARTEI_GRAMMATIK.at[erg_dict['gewinner_partei'],'Artikel NomSin + Parteiname'])
-    data['wahl']['ergebnis'].setdefault("texte", {})['Titel']=satz1
+    """Generiert Wahltext mit TemplateEngine und fügt ihn den Daten hinzu."""
+    variables = analyse_election_data(data)
+    
+    # TemplateEngine initialisieren
+    engine = TemplateEngine(
+        templates=TEMPLATES,
+        variables=variables,
+        corrections=CORRECTIONS
+    )
+    
+    # Text generieren (nur "titel" Template)
+    selected = engine.select_templates(filter_topic="ergebnis")
+    text = engine.build_text(selected)
+    
+    # Text in Datenstruktur einfügen
+    data['wahl']['ergebnis'].setdefault("texte", {})['Titel'] = text
     return data
+
 
 def main():
     try:
@@ -80,9 +102,7 @@ def main():
         
     new_data = write_election_text(data)
     json.dump(new_data, sys.stdout, indent=2)
-    
-#%% hier startet das Hauptprogramm
+
+
 if __name__ == "__main__":
     main()
-
-# %%

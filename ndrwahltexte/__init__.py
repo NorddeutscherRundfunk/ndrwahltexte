@@ -1,0 +1,1 @@
+from .ndrwahltexte import main, write_election_text

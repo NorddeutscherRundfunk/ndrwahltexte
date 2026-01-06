@@ -4,13 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ndrwahltexte"
-version = "0.1.0"
+version = "0.2.0"
 description = "Erstellt Fließtext basierend auf dem Wahlergebnis"
 authors = [{ name = "Lalon Sander", email = "l.sander.fm@ndr.de" }]
 readme = "README.md"
 requires-python = ">=3.7"
 dependencies = [
     "pandas",
+    "simpleeval",
 ]
 
 [project.scripts]
