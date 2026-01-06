@@ -88,9 +88,7 @@ def write_election_text(data):
     selected = engine.select_templates(filter_topic="ergebnis")
     text = engine.build_text(selected)
     
-    # Text in Datenstruktur einfügen
-    data['wahl']['ergebnis'].setdefault("texte", {})['Titel'] = text
-    return data
+    return {'Titel': text}
 
 
 def main():
