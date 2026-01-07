@@ -45,10 +45,12 @@ PARTEI_PRONOMEN = {
 }
 
 # Templates für Wahltexte
+# Templates für Wahltexte
 TEMPLATES = {
+    # === TITEL ===
     "titel_gleichauf": {
         "topic": "ergebnis",
-        "conditions": ["gewinner_prozent == zweite_prozent"],
+        "conditions": ["num_parties >= 2", "gewinner_prozent == zweite_prozent"],
         "text": "Wahl: In {name} sind {gewinner_partei} und {zweite_partei} gleichauf"
     },
 
@@ -64,40 +66,70 @@ TEMPLATES = {
         "text": "Wahl: {gewinner_partei} stärkste Kraft in {name}"
     },
 
+    # === ABSATZ1 ===
     "absatz1_gleichauf": {
         "topic": "absatz1",
-        "conditions": ["gewinner_prozent == zweite_prozent"],
+        "conditions": ["num_parties >= 2", "gewinner_prozent == zweite_prozent"],
         "text": "Bei der Wahl in {name} sind {gewinner_partei} und {zweite_partei} bei den Zweitstimmen gleichauf. Für sie stimmten jeweils {gewinner_prozent} Prozent der Wählerinnen und Wähler."
     },
 
     "absatz1_gewinner": {
         "topic": "absatz1",
-        "conditions": ["gewinner_prozent != zweite_prozent"],
+        "conditions": ["num_parties >= 2", "gewinner_prozent != zweite_prozent"],
         "text": "Bei der Wahl in {name} gingen die meisten Zweitstimmen an {gewinner_partei}. Für {gewinner_partei} stimmten {gewinner_prozent} Prozent der Wählerinnen und Wähler."
+    },
+
+    "absatz1_gewinner_allein": {
+        "topic": "absatz1",
+        "conditions": ["num_parties == 1"],
+        "text": "Bei der Wahl in {name} gingen die meisten Zweitstimmen an {gewinner_partei}. Für {gewinner_partei} stimmten {gewinner_prozent} Prozent der Wählerinnen und Wähler."
+    },
+
+    "absatz1_keine_weiteren": {
+        "topic": "absatz1",
+        "conditions": ["num_parties == 1"],
+        "text": "In {name} traten keine weiteren Parteien an."
     },
 
     "absatz1_abstand_plural": {
         "topic": "absatz1",
-        "conditions": ["gewinner_prozent != zweite_prozent", "gewinner_partei == 'Grüne'"],
+        "conditions": ["num_parties >= 2", "gewinner_prozent != zweite_prozent", "gewinner_partei == 'Grüne'"],
         "text": "{gewinner_pronomen} liegen damit in {name} vor {zweite_partei}. Für {zweite_partei} stimmten in {name} {zweite_prozent} Prozent."
     },
 
     "absatz1_abstand_singular": {
         "topic": "absatz1",
-        "conditions": ["gewinner_prozent != zweite_prozent", "gewinner_partei != 'Grüne'"],
+        "conditions": ["num_parties >= 2", "gewinner_prozent != zweite_prozent", "gewinner_partei != 'Grüne'"],
         "text": "{gewinner_pronomen} liegt damit in {name} vor {zweite_partei}. Für {zweite_partei} stimmten in {name} {zweite_prozent} Prozent."
     },
 
-    "absatz1_weitere": {
+    # === WEITERE PARTEIEN ===
+    "absatz1_weitere_5": {
         "topic": "absatz1",
+        "conditions": ["num_parties >= 5"],
         "text": "Danach folgen dem Ergebnis zufolge {dritte_partei} mit {dritte_prozent} Prozent auf Platz drei, {vierte_partei} ({vierte_prozent} Prozent) und {fuenfte_partei} ({fuenfte_prozent} Prozent)."
+    },
+
+    "absatz1_weitere_4": {
+        "topic": "absatz1",
+        "conditions": ["num_parties == 4"],
+        "text": "Danach folgen dem Ergebnis zufolge {dritte_partei} mit {dritte_prozent} Prozent auf Platz drei und {vierte_partei} mit {vierte_prozent} Prozent."
+    },
+
+    "absatz1_weitere_3": {
+        "topic": "absatz1",
+        "conditions": ["num_parties == 3"],
+        "text": "Auf dem dritten Platz folgt {dritte_partei} mit {dritte_prozent} Prozent."
     }
 }
 
 # Alle Templates für Artikelkorrekturen
-ALL_TEMPLATES = ["titel_gleichauf", "titel_absolute_mehrheit", "titel_gewinner_vorn",
-                 "absatz1_gleichauf", "absatz1_gewinner",
-                 "absatz1_abstand_plural", "absatz1_abstand_singular", "absatz1_weitere"]
+ALL_TEMPLATES = [
+    "titel_gleichauf", "titel_absolute_mehrheit", "titel_gewinner_vorn",
+    "absatz1_gleichauf", "absatz1_gewinner", "absatz1_gewinner_allein", "absatz1_keine_weiteren",
+    "absatz1_abstand_plural", "absatz1_abstand_singular",
+    "absatz1_weitere_5", "absatz1_weitere_4", "absatz1_weitere_3"
+]
 
 DATIV_TEMPLATES = ["absatz1_abstand_plural", "absatz1_abstand_singular"]
 

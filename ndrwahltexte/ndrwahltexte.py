@@ -56,34 +56,46 @@ def load_election_data(data):
         sys.exit(1)
 
 
+def safe_get_party_data(df, index):
+    """Safely extract party and percentage from dataframe row.
+
+    Returns:
+        tuple: (partei, prozent) or (None, None) if index doesn't exist
+    """
+    if index < len(df):
+        return df.at[index, 'partei'], float(df.at[index, 'prozent'])
+    return None, None
+
 def analyse_election_data(data):
     """Analysiert Wahldaten und erstellt ein Dictionary mit Variablen für Templates."""
     election_data, results_data, candidate_df = load_election_data(data)
 
     # Basis-Variablen
     name = election_data['gks_name'].split(',')[0]
+    num_parties = len(candidate_df)
 
-    # Top 5 Parteien
-    gewinner_partei = candidate_df.at[0, 'partei']
-    zweite_partei = candidate_df.at[1, 'partei']
-    dritte_partei = candidate_df.at[2, 'partei']
-    vierte_partei = candidate_df.at[3, 'partei']
-    fuenfte_partei = candidate_df.at[4, 'partei']
+    # Extract party data safely
+    gewinner_partei, gewinner_prozent = safe_get_party_data(candidate_df, 0)
+    zweite_partei, zweite_prozent = safe_get_party_data(candidate_df, 1)
+    dritte_partei, dritte_prozent = safe_get_party_data(candidate_df, 2)
+    vierte_partei, vierte_prozent = safe_get_party_data(candidate_df, 3)
+    fuenfte_partei, fuenfte_prozent = safe_get_party_data(candidate_df, 4)
 
     variables = {
         'ortsname': name,
         'name': name,
+        'num_parties': num_parties,
         'gewinner_partei': gewinner_partei,
-        'gewinner_prozent': float(candidate_df.at[0, 'prozent']),  # Keep numeric
-        'gewinner_pronomen': PARTEI_PRONOMEN.get(gewinner_partei, 'Sie'),
+        'gewinner_prozent': gewinner_prozent,
+        'gewinner_pronomen': PARTEI_PRONOMEN.get(gewinner_partei, 'Sie') if gewinner_partei else None,
         'zweite_partei': zweite_partei,
-        'zweite_prozent': float(candidate_df.at[1, 'prozent']),  # Keep numeric
+        'zweite_prozent': zweite_prozent,
         'dritte_partei': dritte_partei,
-        'dritte_prozent': float(candidate_df.at[2, 'prozent']),  # Keep numeric
+        'dritte_prozent': dritte_prozent,
         'vierte_partei': vierte_partei,
-        'vierte_prozent': float(candidate_df.at[3, 'prozent']),  # Keep numeric
+        'vierte_prozent': vierte_prozent,
         'fuenfte_partei': fuenfte_partei,
-        'fuenfte_prozent': float(candidate_df.at[4, 'prozent']),  # Keep numeric
+        'fuenfte_prozent': fuenfte_prozent,
     }
     return variables
 
