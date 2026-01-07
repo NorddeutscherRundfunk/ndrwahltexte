@@ -56,23 +56,10 @@ def load_election_data(data):
         sys.exit(1)
 
 
-def to_decimal_comma(value):
-    """Konvertiert Dezimalpunkt zu Komma und entfernt trailing .0"""
-    str_value = str(value).replace('.', ',')
-    if str_value.endswith(',0'):
-        str_value = str_value[:-2]
-    return str_value
-
-
-def format_wahlberechtigte(value):
-    """Formatiert Wahlberechtigte mit Tausenderpunkt"""
-    return f"{int(value):,}".replace(',', '.')
-
-
 def analyse_election_data(data):
     """Analysiert Wahldaten und erstellt ein Dictionary mit Variablen für Templates."""
     election_data, results_data, candidate_df = load_election_data(data)
-    print(candidate_df)
+
     # Basis-Variablen
     name = election_data['gks_name'].split(',')[0]
 
@@ -87,16 +74,16 @@ def analyse_election_data(data):
         'ortsname': name,
         'name': name,
         'gewinner_partei': gewinner_partei,
-        'gewinner_prozent': to_decimal_comma(candidate_df.at[0, 'prozent']),
+        'gewinner_prozent': float(candidate_df.at[0, 'prozent']),  # Keep numeric
         'gewinner_pronomen': PARTEI_PRONOMEN.get(gewinner_partei, 'Sie'),
         'zweite_partei': zweite_partei,
-        'zweite_prozent': to_decimal_comma(candidate_df.at[1, 'prozent']),
+        'zweite_prozent': float(candidate_df.at[1, 'prozent']),  # Keep numeric
         'dritte_partei': dritte_partei,
-        'dritte_prozent': to_decimal_comma(candidate_df.at[2, 'prozent']),
+        'dritte_prozent': float(candidate_df.at[2, 'prozent']),  # Keep numeric
         'vierte_partei': vierte_partei,
-        'vierte_prozent': to_decimal_comma(candidate_df.at[3, 'prozent']),
+        'vierte_prozent': float(candidate_df.at[3, 'prozent']),  # Keep numeric
         'fuenfte_partei': fuenfte_partei,
-        'fuenfte_prozent': to_decimal_comma(candidate_df.at[4, 'prozent']),
+        'fuenfte_prozent': float(candidate_df.at[4, 'prozent']),  # Keep numeric
     }
     return variables
 

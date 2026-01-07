@@ -46,15 +46,28 @@ PARTEI_PRONOMEN = {
 
 # Templates für Wahltexte
 TEMPLATES = {
-    "titel": {
+    "titel_gleichauf": {
         "topic": "ergebnis",
-        "text": "In {ortsname} gingen die meisten Zweitstimmen an {gewinner_partei}."
+        "conditions": ["gewinner_prozent == zweite_prozent"],
+        "text": "Wahl: In {name} sind {gewinner_partei} und {zweite_partei} gleichauf"
+    },
+
+    "titel_absolute_mehrheit": {
+        "topic": "ergebnis",
+        "conditions": ["gewinner_prozent >= 50", "gewinner_prozent != zweite_prozent"],
+        "text": "Wahl: Absolute Mehrheit für {gewinner_partei} in {name}"
+    },
+
+    "titel_gewinner_vorn": {
+        "topic": "ergebnis",
+        "conditions": ["gewinner_prozent < 50", "gewinner_prozent != zweite_prozent"],
+        "text": "Wahl: {gewinner_partei} stärkste Kraft in {name}"
     },
 
     "absatz1_gleichauf": {
         "topic": "absatz1",
         "conditions": ["gewinner_prozent == zweite_prozent"],
-        "text": "Bei der Wahl 2025 in {name} sind {gewinner_partei} und {zweite_partei} bei den Zweitstimmen gleichauf. Für sie stimmten jeweils {gewinner_prozent} Prozent der Wählerinnen und Wähler."
+        "text": "Bei der Wahl in {name} sind {gewinner_partei} und {zweite_partei} bei den Zweitstimmen gleichauf. Für sie stimmten jeweils {gewinner_prozent} Prozent der Wählerinnen und Wähler."
     },
 
     "absatz1_gewinner": {
@@ -82,7 +95,8 @@ TEMPLATES = {
 }
 
 # Alle Templates für Artikelkorrekturen
-ALL_TEMPLATES = ["titel", "absatz1_gleichauf", "absatz1_gewinner",
+ALL_TEMPLATES = ["titel_gleichauf", "titel_absolute_mehrheit", "titel_gewinner_vorn",
+                 "absatz1_gleichauf", "absatz1_gewinner",
                  "absatz1_abstand_plural", "absatz1_abstand_singular", "absatz1_weitere"]
 
 DATIV_TEMPLATES = ["absatz1_abstand_plural", "absatz1_abstand_singular"]
@@ -92,6 +106,17 @@ DATIV_TEMPLATES = ["absatz1_abstand_plural", "absatz1_abstand_singular"]
 # Diese werden dynamisch aus den Parteien-Listen generiert
 def _build_corrections():
     corrections = {}
+
+    # === NUMBER FORMATTING: Decimal point to comma, remove trailing .0 ===
+    # Matches decimal numbers like "34.5" or "50.0" and converts them
+    corrections[r'\b(\d+)\.0\b'] = {
+        "replacement": r"\1",
+        "applies_to": ALL_TEMPLATES
+    }
+    corrections[r'\b(\d+)\.(\d+)\b'] = {
+        "replacement": r"\1,\2",
+        "applies_to": ALL_TEMPLATES
+    }
 
     # === NOMINATIV & AKKUSATIV: Feminine Parteien (die → die) ===
     feminin_pattern = r'\b(' + '|'.join(PARTEIEN['feminin']) + r')\b'
