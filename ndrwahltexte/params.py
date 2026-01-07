@@ -6,81 +6,158 @@
 # 
 #########################
 
-# Templates für Wahltexte
-# Jedes Template verwendet Parteinamen im Rohformat (z.B. "SPD", "Grüne")
-# Die Korrekturen fügen die grammatisch korrekten Artikel hinzu
+# Parteien nach grammatischem Geschlecht gruppiert
+PARTEIEN = {
+    'feminin': ['SPD', 'CDU', 'AfD', 'FDP', 'CSU', 'MLPD', 'Tierschutzpartei'],
+    'neutrum': ['BSW', 'Bündnis Deutschland'],
+    'mit_partei_davor': ['Volt', 'dieBasis LV', 'FW-PB'],  # FW-PB = "die Partei Freie Wähler"
+}
 
+# Spezielle Pluralformen
+PLURAL_PARTEIEN = {
+    'Grüne': 'Grünen',
+    'Linke': 'Linken',
+}
+
+# Partei-Namen für "mit Partei davor" Kategorie
+PARTEI_NAMEN = {
+    'Volt': 'Volt',
+    'dieBasis LV': 'dieBasis',
+    'FW-PB': 'Freie Wähler',
+}
+
+# Pronomen für Parteien (Sie/Er/Es)
+PARTEI_PRONOMEN = {
+    'SPD': 'Sie',
+    'CDU': 'Sie',
+    'AfD': 'Sie',
+    'FDP': 'Sie',
+    'Grüne': 'Sie',
+    'Linke': 'Sie',
+    'BSW': 'Es',
+    'CSU': 'Sie',
+    'FW-PB': 'Sie',
+    'Volt': 'Sie',
+    'dieBasis LV': 'Sie',
+    'MLPD': 'Sie',
+    'Tierschutzpartei': 'Sie',
+    'Bündnis Deutschland': 'Es',
+}
+
+# Templates für Wahltexte
 TEMPLATES = {
     "titel": {
         "topic": "ergebnis",
         "text": "In {ortsname} gingen die meisten Zweitstimmen an {gewinner_partei}."
+    },
+
+    "absatz1_gleichauf": {
+        "topic": "absatz1",
+        "conditions": ["gewinner_prozent == zweite_prozent"],
+        "text": "Bei der Wahl 2025 in {name} sind {gewinner_partei} und {zweite_partei} bei den Zweitstimmen gleichauf. Für sie stimmten jeweils {gewinner_prozent} Prozent der Wählerinnen und Wähler."
+    },
+
+    "absatz1_gewinner": {
+        "topic": "absatz1",
+        "conditions": ["gewinner_prozent != zweite_prozent"],
+        "text": "Bei der Wahl in {name} gingen die meisten Zweitstimmen an {gewinner_partei}. Für {gewinner_partei} stimmten {gewinner_prozent} Prozent der Wählerinnen und Wähler."
+    },
+
+    "absatz1_abstand_plural": {
+        "topic": "absatz1",
+        "conditions": ["gewinner_prozent != zweite_prozent", "gewinner_partei == 'Grüne'"],
+        "text": "{gewinner_pronomen} liegen damit in {name} vor {zweite_partei}. Für {zweite_partei} stimmten in {name} {zweite_prozent} Prozent."
+    },
+
+    "absatz1_abstand_singular": {
+        "topic": "absatz1",
+        "conditions": ["gewinner_prozent != zweite_prozent", "gewinner_partei != 'Grüne'"],
+        "text": "{gewinner_pronomen} liegt damit in {name} vor {zweite_partei}. Für {zweite_partei} stimmten in {name} {zweite_prozent} Prozent."
+    },
+
+    "absatz1_weitere": {
+        "topic": "absatz1",
+        "text": "Danach folgen dem Ergebnis zufolge {dritte_partei} mit {dritte_prozent} Prozent auf Platz drei, {vierte_partei} ({vierte_prozent} Prozent) und {fuenfte_partei} ({fuenfte_prozent} Prozent)."
     }
 }
 
-# Korrekturen für grammatisch korrekte Parteinamen
-# Der Satz "...gingen an {partei}" erfordert Akkusativ
-# applies_to: ["titel"] stellt sicher, dass nur dieses Template betroffen ist
+# Alle Templates für Artikelkorrekturen
+ALL_TEMPLATES = ["titel", "absatz1_gleichauf", "absatz1_gewinner",
+                 "absatz1_abstand_plural", "absatz1_abstand_singular", "absatz1_weitere"]
 
-CORRECTIONS = {
-    # Feminine Parteien (die meisten): "an die ..."
-    r"\ban SPD\b": {
-        "replacement": "an die SPD",
-        "applies_to": ["titel"]
-    },
-    r"\ban CDU\b": {
-        "replacement": "an die CDU",
-        "applies_to": ["titel"]
-    },
-    r"\ban AfD\b": {
-        "replacement": "an die AfD",
-        "applies_to": ["titel"]
-    },
-    r"\ban FDP\b": {
-        "replacement": "an die FDP",
-        "applies_to": ["titel"]
-    },
-    r"\ban MLPD\b": {
-        "replacement": "an die MLPD",
-        "applies_to": ["titel"]
-    },
-    r"\ban Tierschutzpartei\b": {
-        "replacement": "an die Tierschutzpartei",
-        "applies_to": ["titel"]
-    },
-    
-    # Pluralformen: "an die ..."
-    r"\ban Grüne\b": {
-        "replacement": "an die Grünen",
-        "applies_to": ["titel"]
-    },
-    r"\ban Linke\b": {
-        "replacement": "an Die Linke",
-        "applies_to": ["titel"]
-    },
-    
-    # Wählergemeinschaften mit "Freie": "an die Freien ..."
-    r"\ban FW-PB\b": {
-        "replacement": "an die Freien Wähler",
-        "applies_to": ["titel"]
-    },
-    
-    # Parteien mit "Partei" davor: "an die Partei ..."
-    r"\ban Volt\b": {
-        "replacement": "an die Partei Volt",
-        "applies_to": ["titel"]
-    },
-    r"\ban dieBasis LV\b": {
-        "replacement": "an die Partei dieBasis",
-        "applies_to": ["titel"]
-    },
-    
-    # Neutrum Parteien: "an das ..."
-    r"\ban BSW\b": {
-        "replacement": "an das BSW",
-        "applies_to": ["titel"]
-    },
-    r"\ban Bündnis Deutschland\b": {
-        "replacement": "an das Bündnis Deutschland",
-        "applies_to": ["titel"]
-    },
-}
+DATIV_TEMPLATES = ["absatz1_abstand_plural", "absatz1_abstand_singular"]
+
+
+# Korrekturen für grammatisch korrekte Parteinamen
+# Diese werden dynamisch aus den Parteien-Listen generiert
+def _build_corrections():
+    corrections = {}
+
+    # === NOMINATIV & AKKUSATIV: Feminine Parteien (die → die) ===
+    feminin_pattern = r'\b(' + '|'.join(PARTEIEN['feminin']) + r')\b'
+    corrections[feminin_pattern] = {
+        "replacement": r"die \1",
+        "applies_to": ALL_TEMPLATES
+    }
+
+    # === NOMINATIV & AKKUSATIV: Neutrum Parteien (das → das) ===
+    neutrum_pattern = r'\b(' + '|'.join(PARTEIEN['neutrum']) + r')\b'
+    corrections[neutrum_pattern] = {
+        "replacement": r"das \1",
+        "applies_to": ALL_TEMPLATES
+    }
+
+    # === NOMINATIV & AKKUSATIV: Parteien mit "Partei" davor ===
+    for partei_key in PARTEIEN['mit_partei_davor']:
+        partei_name = PARTEI_NAMEN[partei_key]
+        corrections[rf'\b{partei_key}\b'] = {
+            "replacement": f"die Partei {partei_name}",
+            "applies_to": ALL_TEMPLATES
+        }
+
+    # === NOMINATIV & AKKUSATIV: Pluralformen (die Grünen, Die Linke) ===
+    corrections[r'\bGrüne\b'] = {
+        "replacement": "die Grünen",
+        "applies_to": ALL_TEMPLATES
+    }
+    corrections[r'\bLinke\b'] = {
+        "replacement": "Die Linke",
+        "applies_to": ALL_TEMPLATES
+    }
+
+    # === DATIV: Feminine Parteien (der) ===
+    feminin_dativ_pattern = r'\bvor die (' + '|'.join(PARTEIEN['feminin']) + r')\b'
+    corrections[feminin_dativ_pattern] = {
+        "replacement": r"vor der \1",
+        "applies_to": DATIV_TEMPLATES
+    }
+
+    # === DATIV: Neutrum Parteien (dem) ===
+    neutrum_dativ_pattern = r'\bvor das (' + '|'.join(PARTEIEN['neutrum']) + r')\b'
+    corrections[neutrum_dativ_pattern] = {
+        "replacement": r"vor dem \1",
+        "applies_to": DATIV_TEMPLATES
+    }
+
+    # === DATIV: Parteien mit "Partei" davor (der Partei) ===
+    for partei_key in PARTEIEN['mit_partei_davor']:
+        partei_name = PARTEI_NAMEN[partei_key]
+        corrections[rf'\bvor die Partei {partei_key}\b'] = {
+            "replacement": f"vor der Partei {partei_name}",
+            "applies_to": DATIV_TEMPLATES
+        }
+
+    # === DATIV: Pluralformen (den Grünen, Der Linken) ===
+    corrections[r'\bvor die Grüne\b'] = {
+        "replacement": "vor den Grünen",
+        "applies_to": DATIV_TEMPLATES
+    }
+    corrections[r'\bvor Die Linke\b'] = {
+        "replacement": "vor Der Linken",
+        "applies_to": DATIV_TEMPLATES
+    }
+
+    return corrections
+
+
+CORRECTIONS = _build_corrections()
