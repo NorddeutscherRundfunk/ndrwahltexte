@@ -73,6 +73,11 @@ def analyse_election_data(data):
     # Basis-Variablen
     name = election_data['gks_name'].split(',')[0]
     num_parties = len(candidate_df)
+    wahlart = election_data['wahlart']
+    ergebnis_art = results_data['ergebnis_art']
+    wahlberechtigte = election_data['anz_wahlberechtigte']
+    wahlbeteiligung = results_data['wahlbeteil']
+    wahlorgan = election_data['organ']
 
     # Extract party data safely
     gewinner_partei, gewinner_prozent = safe_get_party_data(candidate_df, 0)
@@ -84,7 +89,12 @@ def analyse_election_data(data):
     variables = {
         'ortsname': name,
         'name': name,
+        'wahlart': wahlart,
+        'wahlorgan': wahlorgan,
+        'ergebnis_art': ergebnis_art,
         'num_parties': num_parties,
+        'wahlberechtigte': wahlberechtigte,
+        'wahlbeteiligung': wahlbeteiligung,
         'gewinner_partei': gewinner_partei,
         'gewinner_prozent': gewinner_prozent,
         'gewinner_pronomen': PARTEI_PRONOMEN.get(gewinner_partei, 'Sie') if gewinner_partei else None,
@@ -119,6 +129,12 @@ def write_election_text(data):
     absatz1_selected = engine.select_templates(filter_topic="absatz1")
     absatz1 = engine.build_text(absatz1_selected)
 
+    # Prüfen ob Titel oder Absatz1 leer sind
+    if not titel or not titel.strip() or not absatz1 or not absatz1.strip():
+        return {
+            'error': 'Für diese Daten konnte kein Wahltext geschrieben werden.'
+        }
+
     return {
         'Titel': titel,
         'Absatz1': absatz1
@@ -133,6 +149,19 @@ def main():
         sys.exit(1)
 
     new_data = write_election_text(data)
+
+    # Prüfen ob ein Fehler zurückgegeben wurde
+    if 'error' in new_data:
+        error_obj = {
+            "error": {
+                "type": "ValidationError",
+                "message": new_data['error'],
+                "traceback": ""
+            }
+        }
+        print(json.dumps(error_obj, indent=2), file=sys.stderr)
+        sys.exit(1)
+
     json.dump(new_data, sys.stdout, indent=2)
 
 

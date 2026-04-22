@@ -57,7 +57,7 @@ class TemplateEngine:
         self.corrections = corrections or {}        # Grammar/style corrections
         self.article = {}                           # Full generated article
 
-    def check_conditions(self, conditions: List[str]) -> bool:
+    def check_conditions(self, conditions: List[str], template_text: str = None) -> bool:
         """
         Evaluates all given condition strings using current variables.
 
@@ -69,6 +69,11 @@ class TemplateEngine:
             This means that sentences that are to always be used can be templated
             without a condition
         """
+        print(template_text)
+        matches = re.findall(r'\{([^}]+)\}', template_text)
+        print(matches)
+        conditions.extend(matches)
+
         if not conditions:
             return True
         try:
@@ -94,7 +99,7 @@ class TemplateEngine:
         if isinstance(filter_topic, list):
             for key in filter_topic:
                 template = self.templates.get(key)
-                if template and self.check_conditions(template.get("conditions", [])):
+                if template and self.check_conditions(template.get("conditions", []), template.get("text", "")):
                     selected.append((key, template))
 
         # Case 2: A single topic string
@@ -102,7 +107,7 @@ class TemplateEngine:
             for key, template in self.templates.items():
                 if filter_topic and template.get("topic") != filter_topic:
                     continue
-                if self.check_conditions(template.get("conditions", [])):
+                if self.check_conditions(template.get("conditions", []), template.get("text", "")):
                     selected.append((key, template))
 
         return selected
