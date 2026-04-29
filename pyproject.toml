@@ -4,9 +4,9 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ndrwahltexte"
-version = "0.2.0"
+version = "0.3.0"
 description = "Erstellt Fließtext basierend auf dem Wahlergebnis"
-authors = [{ name = "Lalon Sander", email = "l.sander.fm@ndr.de" }]
+authors = [{ name = "Lalon Sander", email = "l.sander@ndr.de" }]
 readme = "README.md"
 requires-python = ">=3.7"
 dependencies = [

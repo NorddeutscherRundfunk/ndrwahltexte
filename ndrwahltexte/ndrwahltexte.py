@@ -8,23 +8,12 @@
 
 import json
 import sys
-import traceback
 import pandas as pd
 
 from .robotext import TemplateEngine
-from .params import TEMPLATES, CORRECTIONS, PARTEI_PRONOMEN
-
-def write_error(e):
-    """Gibt Fehler als JSON auf stderr aus."""
-    error_obj = {
-        "error": {
-            "type": type(e).__name__,
-            "message": str(e),
-            "traceback": traceback.format_exc()
-        }
-    }
-    print(json.dumps(error_obj, indent=2), file=sys.stderr)
-
+from .templates.parties import PARTEI_PRONOMEN
+from .templates import load_for  # NEW: use auto-loader
+from .utils import write_error
 
 def removekey(d, key):
     """Entfernt einen Schlüssel aus einem Dictionary und gibt eine Kopie zurück."""
@@ -109,25 +98,26 @@ def analyse_election_data(data):
     }
     return variables
 
-
 def write_election_text(data):
     """Generiert Wahltext mit TemplateEngine und fügt ihn den Daten hinzu."""
     variables = analyse_election_data(data)
 
+    # Load templates and corrections by convention
+    # Note: load_for now handles its own errors and exits
+    config = load_for(variables['wahlart'], variables['ergebnis_art'])
+
     # TemplateEngine initialisieren
     engine = TemplateEngine(
-        templates=TEMPLATES,
+        templates=config['templates'],
         variables=variables,
-        corrections=CORRECTIONS
+        corrections=config['corrections']
     )
 
     # Titel generieren
-    titel_selected = engine.select_templates(filter_topic="ergebnis")
-    titel = engine.build_text(titel_selected)
+    titel = engine.build_text(engine.select_templates(filter_topic="ergebnis"))
 
     # Absatz1 generieren
-    absatz1_selected = engine.select_templates(filter_topic="absatz1")
-    absatz1 = engine.build_text(absatz1_selected)
+    absatz1 = engine.build_text(engine.select_templates(filter_topic="absatz1"))
 
     # Prüfen ob Titel oder Absatz1 leer sind
     if not titel or not titel.strip() or not absatz1 or not absatz1.strip():

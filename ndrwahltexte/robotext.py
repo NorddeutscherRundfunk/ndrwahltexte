@@ -69,9 +69,9 @@ class TemplateEngine:
             This means that sentences that are to always be used can be templated
             without a condition
         """
-        print(template_text)
+        #print(template_text)
         matches = re.findall(r'\{([^}]+)\}', template_text)
-        print(matches)
+        #print(matches)
         conditions.extend(matches)
 
         if not conditions:
