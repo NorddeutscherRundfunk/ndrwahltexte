@@ -8,38 +8,38 @@ TEMPLATES = {
     "titel_gleichauf": {
         "topic": "ergebnis",
         "conditions": ["num_parties >= 2", "gewinner_prozent == zweite_prozent"],
-        "text": "Wahl: In {name} sind {gewinner_partei} und {zweite_partei} gleichauf"
+        "text": "{wahlorgan}swahl: In {name} sind {gewinner_partei} und {zweite_partei} gleichauf"
     },
 
     "titel_absolute_mehrheit": {
         "topic": "ergebnis",
         "conditions": ["gewinner_prozent >= 50", "gewinner_prozent != zweite_prozent"],
-        "text": "Wahl: Absolute Mehrheit für {gewinner_partei} in {name}"
+        "text": "{wahlorgan}swahl: Absolute Mehrheit für {gewinner_partei} in {name}"
     },
 
     "titel_gewinner_vorn": {
         "topic": "ergebnis",
         "conditions": ["gewinner_prozent < 50", "gewinner_prozent != zweite_prozent"],
-        "text": "Wahl: {gewinner_partei} stärkste Kraft in {name}"
+        "text": "{wahlorgan}swahl: {gewinner_partei} stärkste Kraft in {name}"
     },
 
     # === ABSATZ1 ===
     "absatz1_gleichauf": {
         "topic": "absatz1",
         "conditions": ["num_parties >= 2", "gewinner_prozent == zweite_prozent"],
-        "text": "Bei der Wahl in {name} sind {gewinner_partei} und {zweite_partei} bei den Zweitstimmen gleichauf. Für sie stimmten jeweils {gewinner_prozent} Prozent der Wählerinnen und Wähler."
+        "text": "Bei der {wahlorgan}swahl in {name} sind {gewinner_partei} und {zweite_partei} bei den Zweitstimmen gleichauf. Für sie stimmten jeweils {gewinner_prozent} Prozent der Wählerinnen und Wähler."
     },
 
     "absatz1_gewinner": {
         "topic": "absatz1",
         "conditions": ["num_parties >= 2", "gewinner_prozent != zweite_prozent"],
-        "text": "Bei der Wahl in {name} gingen die meisten Zweitstimmen an {gewinner_partei}. Für {gewinner_partei} stimmten {gewinner_prozent} Prozent der Wählerinnen und Wähler."
+        "text": "Bei der {wahlorgan}swahl in {name} gingen die meisten Zweitstimmen an {gewinner_partei}. Für {gewinner_partei} stimmten {gewinner_prozent} Prozent der Wählerinnen und Wähler."
     },
 
     "absatz1_gewinner_allein": {
         "topic": "absatz1",
         "conditions": ["num_parties == 1"],
-        "text": "Bei der Wahl in {name} gingen die meisten Zweitstimmen an {gewinner_partei}. Für {gewinner_partei} stimmten {gewinner_prozent} Prozent der Wählerinnen und Wähler."
+        "text": "Bei der {wahlorgan}swahl in {name} gingen die meisten Zweitstimmen an {gewinner_partei}. Für {gewinner_partei} stimmten {gewinner_prozent} Prozent der Wählerinnen und Wähler."
     },
 
     "absatz1_keine_weiteren": {
