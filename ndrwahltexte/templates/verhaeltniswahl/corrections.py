@@ -93,4 +93,10 @@ def build_verhaeltniswahl_corrections(template_keys):
         "applies_to": dativ_templates
     }
 
+    # === AUSZÄHLUNG einem Wahlbereich ===
+    corrections[r'Auszählung von 1 von'] = {
+        "replacement": "Auszählung von einem von",
+        "applies_to": dativ_templates
+    }
+
     return corrections

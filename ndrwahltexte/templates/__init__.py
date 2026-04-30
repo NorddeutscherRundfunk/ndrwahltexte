@@ -32,8 +32,10 @@ def load_for(wahlart, ergebnis_art):
     # Convention: "Kein Ergebnis" → kein_ergebnis, others → mit_ergebnis
     if ergebnis_art == 'Kein Ergebnis':
         ergebnis_module = 'kein_ergebnis'
-    else:
-        ergebnis_module = 'mit_ergebnis'
+    elif 'Endergebnis' in ergebnis_art:
+        ergebnis_module = 'endergebnis'
+    elif 'Zwischenergebnis' in ergebnis_art:
+        ergebnis_module = 'zwischenergebnis'
 
     module_path = f'ndrwahltexte.templates.{wahlart_module}.{ergebnis_module}'
     corrections_path = f'ndrwahltexte.templates.{wahlart_module}.corrections'

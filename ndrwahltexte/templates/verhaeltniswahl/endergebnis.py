@@ -1,6 +1,6 @@
 """
 Templates for Verhältniswahl with result data available.
-(All result types except "Kein Ergebnis")
+(All result types containing "Endergebnis")
 """
 
 TEMPLATES = {
