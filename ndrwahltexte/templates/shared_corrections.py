@@ -20,6 +20,38 @@ def build_shared_corrections():
         "applies_to": None
     }
 
+    # === CAPITALIZATION: Die Linke ===
+    corrections[r'\bdie Linke\b'] = {
+        "replacement": "Die Linke",
+        "applies_to": None  # Apply to all templates
+    }
+
+    corrections[r'\bder Linken\b'] = {
+        "replacement": "Der Linken",
+        "applies_to": None  # Apply to all templates
+    }
+
+    # === LOCATION: in Kreis → im Kreis ===
+    corrections[r'\b([iI])n Kreis\b'] = {
+        "replacement": r"\1m Kreis",
+        "applies_to": None
+    }
+
+    # === COUNTING: von 1 von → von einem von ===
+    corrections[r'Auszählung von 1 von'] = {
+        "replacement": "Auszählung von einem von",
+        "applies_to": None
+    }
+
+    # === CAPITALIZATION: Sentence starts after period ===
+    def capitalize_after_period(match):
+        return '. ' + match.group(1).upper()
+
+    corrections[r'\. ([a-zäöü])'] = {
+        "replacement": capitalize_after_period,
+        "applies_to": None
+    }
+
     # === NUMBER FORMATTING: Add . between thousands ===
     def format_german_number(m):
         num = m.group(1)

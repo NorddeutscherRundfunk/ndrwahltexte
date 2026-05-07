@@ -3,100 +3,184 @@ Corrections specific to Verhältniswahl templates.
 Handles German party name grammar (articles, cases).
 """
 
-from ..parties import PARTEIEN, PARTEI_NAMEN
+from ..parties import PARTEIEN, PARTEI_NAMEN, DATIV_FORMS, PLURAL_PARTEIEN
+
+# === Article Mapping ===
+ARTICLES = {
+    'nominative': {
+        'maskulin': 'der',
+        'feminin': 'die',
+        'neutrum': 'das',
+        'plural': 'die'
+    },
+    'accusative': {
+        'maskulin': 'den',
+        'feminin': 'die',
+        'neutrum': 'das',
+        'plural': 'die'
+    },
+    'dative': {
+        'maskulin': 'dem',
+        'feminin': 'der',
+        'neutrum': 'dem',
+        'plural': 'den'
+    }
+}
+
+# === Prepositions that trigger specific cases ===
+PREPOSITIONS = {
+    'accusative': ['für', 'durch', 'gegen', 'ohne', 'um', 'an'],
+    'dative': ['vor', 'mit', 'bei', 'nach', 'zu', 'von', 'aus', 'seit']
+}
+
+
+def build_nominative_corrections(template_scope):
+    """
+    Build nominative case corrections (standalone patterns only).
+
+    Nominative is the only case that appears without a preposition,
+    so only nominative gets standalone patterns.
+
+    Args:
+        template_scope: List of nominative template keys
+
+    Returns:
+        dict: Nominative correction patterns
+    """
+    corrections = {}
+    article = ARTICLES['nominative']
+
+    # Handle regular genders
+    for gender in ['maskulin', 'feminin', 'neutrum']:
+        if gender not in PARTEIEN or not PARTEIEN[gender]:
+            continue
+
+        parties = PARTEIEN[gender]
+        gender_article = article[gender]
+        party_pattern = '|'.join(parties)
+
+        # Standalone pattern (only for nominative)
+        corrections[rf'\b({party_pattern})\b'] = {
+            "replacement": rf"{gender_article} \1",
+            "applies_to": template_scope
+        }
+
+    # Handle plural gender with special declension handling
+    if 'plural' in PARTEIEN and PARTEIEN['plural']:
+        parties = PARTEIEN['plural']
+        gender_article = article['plural']
+
+        for party in parties:
+            declined_form = PLURAL_PARTEIEN[party]
+            corrections[rf'\b{party}\b'] = {
+                    "replacement": f"{gender_article} {declined_form}",
+                    "applies_to": template_scope
+                }
+
+    # Handle "mit Partei davor" category
+    if 'mit_partei_davor' in PARTEIEN and PARTEIEN['mit_partei_davor']:
+        for partei_key in PARTEIEN['mit_partei_davor']:
+            partei_name = PARTEI_NAMEN[partei_key]
+
+            corrections[rf'\b{partei_key}\b'] = {
+                "replacement": f"die Partei {partei_name}",
+                "applies_to": template_scope
+            }
+
+    return corrections
+
+
+def build_preposition_corrections(case):
+    """
+    Build preposition-based corrections for accusative and dative.
+
+    These patterns match "preposition + party" and apply the correct
+    case-specific article. They apply to ALL templates as a failsafe.
+
+    Args:
+        case: 'accusative' or 'dative'
+
+    Returns:
+        dict: Preposition-based correction patterns
+    """
+    corrections = {}
+    prepositions = PREPOSITIONS.get(case, [])
+    article = ARTICLES[case]
+
+    # Handle regular genders
+    for gender in ['maskulin', 'feminin', 'neutrum']:
+        if gender not in PARTEIEN or not PARTEIEN[gender]:
+            continue
+
+        parties = PARTEIEN[gender]
+        gender_article = article[gender]
+        party_pattern = '|'.join(parties)
+
+        for prep in prepositions:
+            corrections[rf'(?i)\b{prep} ({party_pattern})\b'] = {
+                "replacement": rf"{prep} {gender_article} \1",
+                "applies_to": None
+            }
+
+    # Handle plural gender with special declension
+    if 'plural' in PARTEIEN and PARTEIEN['plural']:
+        parties = PARTEIEN['plural']
+        gender_article = article['plural']
+
+        for party in parties:
+            declined_form = PLURAL_PARTEIEN[party]
+
+            for prep in prepositions:
+                corrections[rf'(?i)\b{prep} {party}\b'] = {
+                    "replacement": f"{prep} {gender_article} {declined_form}",
+                    "applies_to": None
+                }
+
+    # Handle "mit Partei davor" category
+    if 'mit_partei_davor' in PARTEIEN and PARTEIEN['mit_partei_davor']:
+        for partei_key in PARTEIEN['mit_partei_davor']:
+            partei_name = PARTEI_NAMEN[partei_key]
+
+            if case == 'accusative':
+                gender_article = 'die'
+            else:  # dative
+                gender_article = 'der'
+
+            for prep in prepositions:
+                corrections[rf'(?i)\b{prep} {partei_key}\b'] = {
+                    "replacement": f"{prep} {gender_article} Partei {partei_name}",
+                    "applies_to": None
+                }
+
+    return corrections
 
 
 def build_verhaeltniswahl_corrections(template_keys):
     """
     Build corrections specific to Verhältniswahl templates.
 
+    Strategy:
+    1. Nominative: Standalone patterns (scoped to nominative templates)
+       - Uses declined forms for plural parties (Grüne → die Grünen)
+    2. Accusative/Dative: ONLY preposition-based patterns (universal)
+       - Also uses declined forms for plural parties
+
+    This prevents case conflicts in mixed templates like "akkusativ_dativ".
+
     Args:
         template_keys: List of template keys to determine applies_to scope
 
     Returns:
-        dict: Correction patterns specific to Verhältniswahl
+        dict: All correction patterns for Verhältniswahl
     """
     corrections = {}
 
-    # Determine which templates need which corrections
-    absatz_templates = [k for k in template_keys if 'absatz' in k]
-    dativ_templates = [k for k in template_keys if 'dativ' in k]
-    all_templates = list(template_keys)
+    # Identify nominative templates
+    nominativ_templates = [k for k in template_keys if 'nominativ' in k]
 
-    # === AKKUSATIV & DATIV: Orte (in → im) ===
-    corrections[r'\b([iI])n Kreis\b'] = {
-        "replacement": r"\1m Kreis",
-        "applies_to": all_templates
-    }
-
-    # === NOMINATIV & AKKUSATIV: Feminine Parteien (die → die) ===
-    feminin_pattern = r'\b(' + '|'.join(PARTEIEN['feminin']) + r')\b'
-    corrections[feminin_pattern] = {
-        "replacement": r"die \1",
-        "applies_to": absatz_templates
-    }
-
-    # === NOMINATIV & AKKUSATIV: Neutrum Parteien (das → das) ===
-    neutrum_pattern = r'\b(' + '|'.join(PARTEIEN['neutrum']) + r')\b'
-    corrections[neutrum_pattern] = {
-        "replacement": r"das \1",
-        "applies_to": absatz_templates
-    }
-
-    # === NOMINATIV & AKKUSATIV: Parteien mit "Partei" davor ===
-    for partei_key in PARTEIEN['mit_partei_davor']:
-        partei_name = PARTEI_NAMEN[partei_key]
-        corrections[rf'\b{partei_key}\b'] = {
-            "replacement": f"die Partei {partei_name}",
-            "applies_to": absatz_templates
-        }
-
-    # === NOMINATIV & AKKUSATIV: Pluralformen (die Grünen, Die Linke) ===
-    corrections[r'\bGrüne\b'] = {
-        "replacement": "die Grünen",
-        "applies_to": absatz_templates
-    }
-    corrections[r'\bLinke\b'] = {
-        "replacement": "Die Linke",
-        "applies_to": absatz_templates
-    }
-
-    # === DATIV: Feminine Parteien (der) ===
-    feminin_dativ_pattern = r'\bvor die (' + '|'.join(PARTEIEN['feminin'])+ '|Partei' + r')\b'
-    corrections[feminin_dativ_pattern] = {
-        "replacement": r"vor der \1",
-        "applies_to": dativ_templates
-    }
-
-    # === DATIV: Neutrum Parteien (dem) ===
-    neutrum_dativ_pattern = r'\bvor das (' + '|'.join(PARTEIEN['neutrum']) + r')\b'
-    corrections[neutrum_dativ_pattern] = {
-        "replacement": r"vor dem \1",
-        "applies_to": dativ_templates
-    }
-
-    # === DATIV: Parteien mit "Partei" davor (der Partei) ===
-    for partei_key in PARTEIEN['mit_partei_davor']:
-        partei_name = PARTEI_NAMEN[partei_key]
-        corrections[rf'\bvor die Partei {partei_key}\b'] = {
-            "replacement": f"vor der Partei {partei_name}",
-            "applies_to": dativ_templates
-        }
-
-    # === DATIV: Pluralformen (den Grünen, Der Linken) ===
-    corrections[r'\bvor die Grünen\b'] = {
-        "replacement": "vor den Grünen",
-        "applies_to": dativ_templates
-    }
-    corrections[r'\bvor Die Linke\b'] = {
-        "replacement": "vor Der Linken",
-        "applies_to": dativ_templates
-    }
-
-    # === AUSZÄHLUNG einem Wahlbereich ===
-    corrections[r'Auszählung von 1 von'] = {
-        "replacement": "Auszählung von einem von",
-        "applies_to": dativ_templates
-    }
+    # Build corrections
+    corrections.update(build_nominative_corrections(nominativ_templates))
+    corrections.update(build_preposition_corrections('accusative'))
+    corrections.update(build_preposition_corrections('dative'))
 
     return corrections

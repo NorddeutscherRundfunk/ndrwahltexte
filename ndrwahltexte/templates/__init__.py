@@ -45,10 +45,10 @@ def load_for(wahlart, ergebnis_art):
         templates_mod = importlib.import_module(module_path)
         templates = templates_mod.TEMPLATES
 
-        # Layer 1: Shared corrections (apply to all)
-        corrections = build_shared_corrections()
+        # initialize corrections
+        corrections = {}
 
-        # Layer 2: Wahlart-level corrections
+        # Layer 1: Wahlart-level corrections
         try:
             corrections_mod = importlib.import_module(corrections_path)
             wahlart_corrections = corrections_mod.build_verhaeltniswahl_corrections(templates.keys())
@@ -57,14 +57,19 @@ def load_for(wahlart, ergebnis_art):
             # No wahlart-level corrections defined - that's okay, continue
             pass
 
-        # Layer 3: Template-level corrections (optional)
+        # Layer 2: Template-level corrections (optional)
         if hasattr(templates_mod, 'LOCAL_CORRECTIONS'):
             corrections.update(templates_mod.LOCAL_CORRECTIONS)
+
+        # Layer 3: Shared corrections (apply to all)
+        corrections.update(build_shared_corrections())
 
         return {
             'templates': templates,
             'corrections': corrections,
         }
+
+
 
     except ImportError as e:
         error = ValueError(
