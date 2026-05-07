@@ -28,19 +28,11 @@ PARTEI_NAMEN = {
 }
 
 # Pronomen für Parteien (Sie/Er/Es)
-PARTEI_PRONOMEN = {
-    'SPD': 'Sie',
-    'CDU': 'Sie',
-    'AfD': 'Sie',
-    'FDP': 'Sie',
-    'Grüne': 'Sie',
-    'Linke': 'Sie',
-    'BSW': 'Es',
-    'CSU': 'Sie',
-    'FW-PB': 'Sie',
-    'Volt': 'Sie',
-    'dieBasis LV': 'Sie',
-    'MLPD': 'Sie',
-    'Tierschutzpartei': 'Sie',
-    'Bündnis Deutschland': 'Es',
-}
+PARTEI_PRONOMEN = {}
+for partei in PARTEIEN['neutrum']:
+    PARTEI_PRONOMEN[partei] = 'Es'
+for partei in PARTEIEN['feminin'] + PARTEIEN['mit_partei_davor']:
+    PARTEI_PRONOMEN[partei] = 'Sie'
+# Add plural parties
+for partei in PLURAL_PARTEIEN.keys():
+    PARTEI_PRONOMEN[partei] = 'Sie'

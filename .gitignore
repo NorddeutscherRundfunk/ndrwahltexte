@@ -4,3 +4,6 @@ __pycache__/
 .ipynb_checkpoints/
 *.pyc
 archive/
+# Election data cache
+election_data_cache/
+*.json.gz

@@ -62,7 +62,7 @@ def build_verhaeltniswahl_corrections(template_keys):
     }
 
     # === DATIV: Feminine Parteien (der) ===
-    feminin_dativ_pattern = r'\bvor die (' + '|'.join(PARTEIEN['feminin']) + r')\b'
+    feminin_dativ_pattern = r'\bvor die (' + '|'.join(PARTEIEN['feminin'])+ '|Partei' + r')\b'
     corrections[feminin_dativ_pattern] = {
         "replacement": r"vor der \1",
         "applies_to": dativ_templates
@@ -84,7 +84,7 @@ def build_verhaeltniswahl_corrections(template_keys):
         }
 
     # === DATIV: Pluralformen (den Grünen, Der Linken) ===
-    corrections[r'\bvor die Grüne\b'] = {
+    corrections[r'\bvor die Grünen\b'] = {
         "replacement": "vor den Grünen",
         "applies_to": dativ_templates
     }

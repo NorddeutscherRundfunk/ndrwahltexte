@@ -17,6 +17,13 @@ TEMPLATES = {
         "conditions": [],
         "text": "Für die {wahlorgan}swahl in {name} gibt es noch kein Ergebnis."
     },
+
+    # === WAHLBETEILIGUNG ===
+    "absatz1_wahlberechtigte": {
+        "topic": "absatz1",
+        "conditions": [],
+        "text": "In {name} leben {wahlberechtigte} Wahlberechtigte."
+    },
 }
 
 # Optional: Template-specific corrections (rarely needed)

@@ -51,13 +51,13 @@ TEMPLATES = {
     "absatz1_abstand_dativ_plural": {
         "topic": "absatz1",
         "conditions": ["num_parties >= 2", "gewinner_prozent != zweite_prozent", "gewinner_partei == 'Grüne'"],
-        "text": "{gewinner_pronomen} liegen damit in {name} vor {zweite_partei}. Für {zweite_partei} stimmten in {name} {zweite_prozent} Prozent."
+        "text": "{gewinner_pronomen} liegen damit vor {zweite_partei}. Für {zweite_partei} stimmten {zweite_prozent} Prozent."
     },
 
     "absatz1_abstand_dativ_singular": {
         "topic": "absatz1",
         "conditions": ["num_parties >= 2", "gewinner_prozent != zweite_prozent", "gewinner_partei != 'Grüne'"],
-        "text": "{gewinner_pronomen} liegt damit in {name} vor {zweite_partei}. Für {zweite_partei} stimmten in {name} {zweite_prozent} Prozent."
+        "text": "{gewinner_pronomen} liegt damit vor {zweite_partei}. Für {zweite_partei} stimmten {zweite_prozent} Prozent."
     },
 
     # === WEITERE PARTEIEN ===
@@ -80,10 +80,18 @@ TEMPLATES = {
     },
 
     # === WAHLBETEILIGUNG ===
+
+    # === WAHLBETEILIGUNG ===
+    "absatz1_wahlberechtigte": {
+        "topic": "absatz1",
+        "conditions": [],
+        "text": "In {name} leben {wahlberechtigte} Wahlberechtigte."
+    },
+
     "absatz1_wahlbeteiligung": {
         "topic": "absatz1",
         "conditions": [],
-        "text": "In {name} leben {wahlberechtigte} Wahlberechtigte, die Wahlbeteiligung lag bei {wahlbeteiligung} Prozent."
+        "text": "Die Wahlbeteiligung lag bei {wahlbeteiligung} Prozent."
     }
 }
 
