@@ -5,39 +5,45 @@ Templates for Verhältniswahl with result data available.
 
 TEMPLATES = {
     # === TITEL ===
-    "titel_gleichauf_nominativ": {
+    "titel_gleichauf": {
         "topic": "ergebnis",
+        "grammar": ["nominativ"],
         "conditions": ["num_parties >= 2", "gewinner_prozent == zweite_prozent"],
         "text": "{wahlorgan}swahl: In {name} sind {gewinner_partei} und {zweite_partei} gleichauf"
     },
 
-    "titel_absolute_mehrheit_akkusativ": {
+    "titel_absolute_mehrheit": {
         "topic": "ergebnis",
+        "grammar": ["akkusativ"],
         "conditions": ["gewinner_prozent >= 50", "gewinner_prozent != zweite_prozent"],
         "text": "{wahlorgan}swahl: Absolute Mehrheit für {gewinner_partei} in {name}"
     },
 
-    "titel_gewinner_vorn_nominativ": {
+    "titel_gewinner_vorn": {
         "topic": "ergebnis",
+        "grammar": ["nominativ"],
         "conditions": ["gewinner_prozent < 50", "gewinner_prozent != zweite_prozent"],
         "text": "{wahlorgan}swahl: {gewinner_partei} stärkste Kraft in {name}"
     },
 
     # === ABSATZ1 ===
-    "absatz1_gleichauf_nominativ": {
+    "absatz1_gleichauf": {
         "topic": "absatz1",
+        "grammar": ["nominativ"],
         "conditions": ["num_parties >= 2", "gewinner_prozent == zweite_prozent"],
         "text": "Bei der {wahlorgan}swahl in {name} sind {gewinner_partei} und {zweite_partei} bei den Zweitstimmen gleichauf. Für sie stimmten jeweils {gewinner_prozent} Prozent der Wählerinnen und Wähler."
     },
 
-    "absatz1_gewinner_nominativ": {
+    "absatz1_gewinner": {
         "topic": "absatz1",
+        "grammar": ["nominativ"],
         "conditions": ["num_parties >= 2", "gewinner_prozent != zweite_prozent"],
         "text": "Bei der {wahlorgan}swahl in {name} gingen die meisten Zweitstimmen an {gewinner_partei}. Für {gewinner_partei} stimmten {gewinner_prozent} Prozent der Wählerinnen und Wähler."
     },
 
-    "absatz1_gewinner_allein_nominativ": {
+    "absatz1_gewinner_allein": {
         "topic": "absatz1",
+        "grammar": ["nominativ"],
         "conditions": ["num_parties == 1"],
         "text": "Bei der {wahlorgan}swahl in {name} gingen die meisten Zweitstimmen an {gewinner_partei}. Für {gewinner_partei} stimmten {gewinner_prozent} Prozent der Wählerinnen und Wähler."
     },
@@ -48,38 +54,41 @@ TEMPLATES = {
         "text": "In {name} traten keine weiteren Parteien an."
     },
 
-    "absatz1_abstand_akkusativ_dativ_plural": {
+    "absatz1_abstand_plural": {
         "topic": "absatz1",
+        "grammar": ["akkusativ", "dativ", "plural"],
         "conditions": ["num_parties >= 2", "gewinner_prozent != zweite_prozent", "gewinner_partei == 'Grüne'"],
         "text": "{gewinner_pronomen} liegen damit vor {zweite_partei}. Für {zweite_partei} stimmten {zweite_prozent} Prozent."
     },
 
-    "absatz1_abstand_akkusativ_dativ_singular": {
+    "absatz1_abstand_singular": {
         "topic": "absatz1",
+        "grammar": ["akkusativ", "dativ", "singular"],
         "conditions": ["num_parties >= 2", "gewinner_prozent != zweite_prozent", "gewinner_partei != 'Grüne'"],
         "text": "{gewinner_pronomen} liegt damit vor {zweite_partei}. Für {zweite_partei} stimmten {zweite_prozent} Prozent."
     },
 
     # === WEITERE PARTEIEN ===
-    "absatz1_weitere_5_nominativ": {
+    "absatz1_weitere_5": {
         "topic": "absatz1",
+        "grammar": ["nominativ"],
         "conditions": ["num_parties >= 5"],
         "text": "Danach folgen {dritte_partei} mit {dritte_prozent} Prozent auf Platz drei, {vierte_partei} ({vierte_prozent} Prozent) und {fuenfte_partei} ({fuenfte_prozent} Prozent)."
     },
 
-    "absatz1_weitere_4_nominativ": {
+    "absatz1_weitere_4": {
         "topic": "absatz1",
+        "grammar": ["nominativ"],
         "conditions": ["num_parties == 4"],
         "text": "Danach folgen {dritte_partei} mit {dritte_prozent} Prozent auf Platz drei und {vierte_partei} mit {vierte_prozent} Prozent."
     },
 
-    "absatz1_weitere_3_nominativ": {
+    "absatz1_weitere_3": {
         "topic": "absatz1",
+        "grammar": ["nominativ"],
         "conditions": ["num_parties == 3"],
         "text": "Auf dem dritten Platz folgt {dritte_partei} mit {dritte_prozent} Prozent."
     },
-
-    # === WAHLBETEILIGUNG ===
 
     # === WAHLBETEILIGUNG ===
     "absatz1_wahlberechtigte": {

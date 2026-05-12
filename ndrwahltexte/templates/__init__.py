@@ -10,6 +10,7 @@ import importlib
 import sys
 from .shared_corrections import build_shared_corrections
 from ..utils import write_error
+from .party_grammar import build_party_corrections
 
 
 def load_for(wahlart, ergebnis_art):
@@ -54,14 +55,17 @@ def load_for(wahlart, ergebnis_art):
             wahlart_corrections = corrections_mod.build_verhaeltniswahl_corrections(templates.keys())
             corrections.update(wahlart_corrections)
         except (ImportError, AttributeError) as e:
-            # No wahlart-level corrections defined - that's okay, continue
             pass
 
         # Layer 2: Template-level corrections (optional)
         if hasattr(templates_mod, 'LOCAL_CORRECTIONS'):
             corrections.update(templates_mod.LOCAL_CORRECTIONS)
 
-        # Layer 3: Shared corrections (apply to all)
+        # Layer 3: Party grammar corrections (all election types)
+        party_corrections = build_party_corrections(templates)  # Changed: pass templates dict, not keys
+        corrections.update(party_corrections)
+
+        # Layer 4: Shared corrections (apply to all)
         corrections.update(build_shared_corrections())
 
         return {
