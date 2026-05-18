@@ -5,17 +5,21 @@ Templates for Verhältniswahl with result data available.
 
 TEMPLATES = {
     # === TITEL ===
+
+    "titel_wenig_ausgezählt": {
+        "topic": "ergebnis",
+        "conditions": ["gez_wahlbereiche / anz_wahlbereiche < 0.5"],
+        "text": "{wahlorgan}swahl: In {name} sind {gez_wahlbereiche} von {anz_wahlbereiche} Wahlbereichen ausgezählt"
+    },
     "titel_gleichauf": {
         "topic": "ergebnis",
-        "grammar": ["nominativ"],
-        "conditions": ["num_parties >= 2", "gewinner_prozent == zweite_prozent"],
+        "conditions": ["num_parties >= 2", "gewinner_prozent == zweite_prozent", "gez_wahlbereiche / anz_wahlbereiche >= 0.5"],
         "text": "{wahlorgan}swahl: In {name} sind {gewinner_partei} und {zweite_partei} derzeit gleichauf"
     },
 
     "titel_gewinner_vorn": {
         "topic": "ergebnis",
-        "grammar": ["nominativ"],
-        "conditions": ["gewinner_prozent != zweite_prozent"],
+        "conditions": ["gewinner_prozent != zweite_prozent", "gez_wahlbereiche / anz_wahlbereiche >= 0.5"],
         "text": "{wahlorgan}swahl: {gewinner_partei} führt derzeit in {name}"
     },
 
@@ -23,8 +27,8 @@ TEMPLATES = {
     "absatz1_gleichauf": {
         "topic": "absatz1",
         "grammar": ["nominativ"],
-        "conditions": ["num_parties >= 2", "gewinner_prozent == zweite_prozent"],
-        "text": "Bei der {wahlorgan}swahl in {name} liegen {gewinner_partei} und {zweite_partei} nach Auszählung von {gez_wahlbereiche} von {anz_wahlbereiche} Wahlbereichen bei den Zweitstimmen nach bisherigem Auszählungsstand gleichauf. Für sie stimmten bisher jeweils {gewinner_prozent} Prozent der Wählerinnen und Wähler."
+        "conditions": ["num_parties >= 2", "gewinner_prozent == zweite_prozent", "gez_wahlbereiche / anz_wahlbereiche >= 0.5"],
+        "text": "Bei der {wahlorgan}swahl in {name} liegen {gewinner_partei} und {zweite_partei} nach Auszählung von {gez_wahlbereiche} von {anz_wahlbereiche} Wahlbereichen bei den Zweitstimmen gleichauf. Für sie stimmten bisher jeweils {gewinner_prozent} Prozent der Wählerinnen und Wähler."
     },
 
     "absatz1_gewinner": {
@@ -38,7 +42,7 @@ TEMPLATES = {
         "topic": "absatz1",
         "grammar": ["nominativ"],
         "conditions": ["num_parties == 1"],
-        "text": "Bei der {wahlorgan}swahl in {name} gingen nach Auszählung von {gez_wahlbereiche} von {anz_wahlbereiche} Wahlbereichen die meisten Zweitstimmen an {gewinner_partei}. Für {gewinner_partei} stimmten nach aktuellem Stand {gewinner_prozent} Prozent der Wählerinnen und Wähler."
+        "text": "Bei der {wahlorgan}swahl in {name} gingen nach Auszählung von {gez_wahlbereiche} von {anz_wahlbereiche} Wahlbereichen {gewinner_prozent} Prozent der Zweitstimmen an {gewinner_partei}."
     },
 
     "absatz1_keine_weiteren": {

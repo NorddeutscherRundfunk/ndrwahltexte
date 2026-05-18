@@ -7,7 +7,6 @@ TEMPLATES = {
     # === TITEL ===
     "titel_gleichauf": {
         "topic": "ergebnis",
-        "grammar": ["nominativ"],
         "conditions": ["num_parties >= 2", "gewinner_prozent == zweite_prozent"],
         "text": "{wahlorgan}swahl: In {name} sind {gewinner_partei} und {zweite_partei} gleichauf"
     },
@@ -21,7 +20,6 @@ TEMPLATES = {
 
     "titel_gewinner_vorn": {
         "topic": "ergebnis",
-        "grammar": ["nominativ"],
         "conditions": ["gewinner_prozent < 50", "gewinner_prozent != zweite_prozent"],
         "text": "{wahlorgan}swahl: {gewinner_partei} stärkste Kraft in {name}"
     },
@@ -45,7 +43,7 @@ TEMPLATES = {
         "topic": "absatz1",
         "grammar": ["nominativ"],
         "conditions": ["num_parties == 1"],
-        "text": "Bei der {wahlorgan}swahl in {name} gingen die meisten Zweitstimmen an {gewinner_partei}. Für {gewinner_partei} stimmten {gewinner_prozent} Prozent der Wählerinnen und Wähler."
+        "text": "Bei der {wahlorgan}swahl in {name} gingen {gewinner_prozent} Prozent der Zweitstimmen an {gewinner_partei}."
     },
 
     "absatz1_keine_weiteren": {

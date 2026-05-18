@@ -10,6 +10,7 @@ import re
 # Parteien nach grammatischem Geschlecht gruppiert
 PLURAL_PARTEIEN = {
     'Grüne': 'Grünen',
+    'GRÜNE': 'Grünen',
 }
 
 PARTEIEN = {
@@ -34,11 +35,11 @@ PARTEI_NAMEN = {
 # Pronomen für Parteien (Sie/Er/Es)
 PARTEI_PRONOMEN = {}
 for partei in PARTEIEN['neutrum']:
-    PARTEI_PRONOMEN[partei] = 'Es'
+    PARTEI_PRONOMEN[partei] = 'es'
 for partei in PARTEIEN['maskulin']:
-    PARTEI_PRONOMEN[partei] = 'Er'
+    PARTEI_PRONOMEN[partei] = 'er'
 for partei in PARTEIEN['feminin'] + PARTEIEN['mit_partei_davor']:
-    PARTEI_PRONOMEN[partei] = 'Sie'
+    PARTEI_PRONOMEN[partei] = 'sie'
 # Add plural parties
 for partei in PARTEIEN['plural']:
-    PARTEI_PRONOMEN[partei] = 'Sie'
+    PARTEI_PRONOMEN[partei] = 'sie'

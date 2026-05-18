@@ -41,6 +41,15 @@ def build_shared_corrections():
         "applies_to": None
     }
 
+    # === CAPITALIZATION: Start of string ===
+    def capitalize_start(match):
+        return match.group(1).upper()
+
+    corrections[r'^([a-zäöü])'] = {
+        "replacement": capitalize_start,
+        "applies_to": None
+    }
+
     # === NUMBER FORMATTING: Add . between thousands ===
     def format_german_number(m):
         num = m.group(1)
@@ -48,6 +57,12 @@ def build_shared_corrections():
 
     corrections[r'\b(\d{5,})\b'] = {
         "replacement": format_german_number,
+        "applies_to": None
+    }
+
+    # === Miscellaneous spelling corrections ===
+    corrections[r'Abgeordnetenhausswahl'] = {
+        "replacement": "Abgeordnetenhauswahl",
         "applies_to": None
     }
 
