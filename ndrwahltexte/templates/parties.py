@@ -5,7 +5,6 @@
 # -> l.sander.fm@ndr.de 
 # 
 #########################
-import re
 
 # Parteien nach grammatischem Geschlecht gruppiert
 PLURAL_PARTEIEN = {
@@ -30,6 +29,7 @@ PARTEI_NAMEN = {
     'Volt': 'Volt',
     'dieBasis LV': 'dieBasis',
     'FW-PB': 'Freie Wähler',
+    'FREIE WÄHLER': 'Freie Wähler',
 }
 
 # Pronomen für Parteien (Sie/Er/Es)

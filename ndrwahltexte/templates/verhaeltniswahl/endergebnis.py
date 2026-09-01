@@ -14,13 +14,13 @@ TEMPLATES = {
     "titel_absolute_mehrheit": {
         "topic": "ergebnis",
         "grammar": ["akkusativ"],
-        "conditions": ["gewinner_prozent >= 50", "gewinner_prozent != zweite_prozent"],
+        "conditions": ["gewinner_prozent > 50", "gewinner_prozent != zweite_prozent"],
         "text": "{wahlorgan}swahl: Absolute Mehrheit für {gewinner_partei} in {name}"
     },
 
     "titel_gewinner_vorn": {
         "topic": "ergebnis",
-        "conditions": ["gewinner_prozent < 50", "gewinner_prozent != zweite_prozent"],
+        "conditions": ["gewinner_prozent <= 50", "gewinner_prozent != zweite_prozent"],
         "text": "{wahlorgan}swahl: {gewinner_partei} stärkste Kraft in {name}"
     },
 
