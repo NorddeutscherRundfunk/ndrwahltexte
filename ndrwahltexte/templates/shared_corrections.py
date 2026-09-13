@@ -31,6 +31,11 @@ def build_shared_corrections():
         "replacement": "Auszählung von einem von",
         "applies_to": None
     }
+    
+    corrections[r'sind 1 von'] = {
+        "replacement": "ist 1 von",
+        "applies_to": None
+    }
 
     # === CAPITALIZATION: Sentence starts after period ===
     def capitalize_after_period(match):
