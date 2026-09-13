@@ -71,4 +71,9 @@ def build_shared_corrections():
         "applies_to": None
     }
 
+    corrections[r'in Emsland'] = {
+        "replacement": "im Emsland",
+        "applies_to": None
+    }
+
     return corrections
