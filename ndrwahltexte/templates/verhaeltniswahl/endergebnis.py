@@ -29,21 +29,21 @@ TEMPLATES = {
         "topic": "absatz1",
         "grammar": ["nominativ"],
         "conditions": ["num_parties >= 2", "gewinner_prozent == zweite_prozent"],
-        "text": "Bei der {wahlorgan}swahl in {name} sind {gewinner_partei} und {zweite_partei} bei den Zweitstimmen gleichauf. Für sie stimmten jeweils {gewinner_prozent} Prozent der Wählerinnen und Wähler."
+        "text": "Bei der {wahlorgan}swahl in {name} sind {gewinner_partei} und {zweite_partei} gleichauf. Für sie stimmten jeweils {gewinner_prozent} Prozent der Wählerinnen und Wähler."
     },
 
     "absatz1_gewinner": {
         "topic": "absatz1",
         "grammar": ["nominativ"],
         "conditions": ["num_parties >= 2", "gewinner_prozent != zweite_prozent"],
-        "text": "Bei der {wahlorgan}swahl in {name} gingen die meisten Zweitstimmen an {gewinner_partei}. Für {gewinner_partei} stimmten {gewinner_prozent} Prozent der Wählerinnen und Wähler."
+        "text": "Bei der {wahlorgan}swahl in {name} gingen die meisten Stimmen an {gewinner_partei}. Für {gewinner_partei} stimmten {gewinner_prozent} Prozent der Wählerinnen und Wähler."
     },
 
     "absatz1_gewinner_allein": {
         "topic": "absatz1",
         "grammar": ["nominativ"],
         "conditions": ["num_parties == 1"],
-        "text": "Bei der {wahlorgan}swahl in {name} gingen {gewinner_prozent} Prozent der Zweitstimmen an {gewinner_partei}."
+        "text": "Bei der {wahlorgan}swahl in {name} gingen {gewinner_prozent} Prozent der Stimmen an {gewinner_partei}."
     },
 
     "absatz1_keine_weiteren": {

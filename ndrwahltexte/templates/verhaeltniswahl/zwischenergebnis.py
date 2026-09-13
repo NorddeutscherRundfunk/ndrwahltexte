@@ -28,7 +28,7 @@ TEMPLATES = {
         "topic": "absatz1",
         "grammar": ["nominativ"],
         "conditions": ["num_parties >= 2", "gewinner_prozent == zweite_prozent", "gez_wahlbereiche / anz_wahlbereiche >= 0.5"],
-        "text": "Bei der {wahlorgan}swahl in {name} liegen {gewinner_partei} und {zweite_partei} nach Auszählung von {gez_wahlbereiche} von {anz_wahlbereiche} Wahlbereichen bei den Zweitstimmen gleichauf. Für sie stimmten bisher jeweils {gewinner_prozent} Prozent der Wählerinnen und Wähler."
+        "text": "Bei der {wahlorgan}swahl in {name} liegen {gewinner_partei} und {zweite_partei} nach Auszählung von {gez_wahlbereiche} von {anz_wahlbereiche} Wahlbereichen gleichauf. Für sie stimmten bisher jeweils {gewinner_prozent} Prozent der Wählerinnen und Wähler."
     },
 
     "absatz1_gewinner": {
@@ -42,7 +42,7 @@ TEMPLATES = {
         "topic": "absatz1",
         "grammar": ["nominativ"],
         "conditions": ["num_parties == 1"],
-        "text": "Bei der {wahlorgan}swahl in {name} gingen nach Auszählung von {gez_wahlbereiche} von {anz_wahlbereiche} Wahlbereichen {gewinner_prozent} Prozent der Zweitstimmen an {gewinner_partei}."
+        "text": "Bei der {wahlorgan}swahl in {name} gingen nach Auszählung von {gez_wahlbereiche} von {anz_wahlbereiche} Wahlbereichen {gewinner_prozent} Prozent der Stimmen an {gewinner_partei}."
     },
 
     "absatz1_keine_weiteren": {
