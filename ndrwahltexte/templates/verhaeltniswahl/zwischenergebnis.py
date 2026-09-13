@@ -27,7 +27,7 @@ TEMPLATES = {
     "absatz1_gleichauf": {
         "topic": "absatz1",
         "grammar": ["nominativ"],
-        "conditions": ["num_parties >= 2", "gewinner_prozent == zweite_prozent", "gez_wahlbereiche / anz_wahlbereiche >= 0.5"],
+        "conditions": ["num_parties >= 2", "gewinner_prozent == zweite_prozent"],
         "text": "Bei der {wahlorgan}swahl in {name} liegen {gewinner_partei} und {zweite_partei} nach Auszählung von {gez_wahlbereiche} von {anz_wahlbereiche} Wahlbereichen gleichauf. Für sie stimmten bisher jeweils {gewinner_prozent} Prozent der Wählerinnen und Wähler."
     },
 
