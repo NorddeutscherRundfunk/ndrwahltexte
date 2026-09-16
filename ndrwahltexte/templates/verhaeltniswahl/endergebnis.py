@@ -118,7 +118,7 @@ TEMPLATES = {
             "gewinner_rang_vorher == 'nicht angetreten'",
         ],
         "grammar": ["nominativ"],
-        "text": "{gewinner_partei} ist damit bei der {wahlorgan}swahl neue stärkste Kraft in {name}. Bei der vorherigen {wahlorgan}swahl ist {gewinner_partei} nicht angetreten. Bei der vorherigen {wahlorgan}swahl hatte {gewinner_partei_alt} hier die meisten Stimmen bekommen ({gewinner_prozent_alt} Prozent), das ist eine Veränderung von {gewinner_alt_differenz} Prozentpunkten."
+        "text": "{gewinner_partei} ist damit bei der {wahlorgan}swahl neue stärkste Kraft in {name}. Bei der vorherigen {wahlorgan}swahl ist {gewinner_partei} nicht angetreten. Bei der vorherigen {wahlorgan}swahl hatte {gewinner_partei_alt} hier die meisten Stimmen bekommen ({gewinner_prozent_alt} Prozent)."
     },
 
     # --- Neue stärkste Kraft: Gewinner vorher auf Platz X ---
@@ -131,7 +131,7 @@ TEMPLATES = {
             "gewinner_rang_vorher != 'nicht angetreten'",
         ],
         "grammar": ["nominativ"],
-        "text": "{gewinner_partei} ist damit bei der {wahlorgan}swahl neue stärkste Kraft in {name}. Bei der vorherigen Wahl lag {gewinner_pronomen} mit {gewinner_ergebnis_alt} Prozent der Stimmen auf Platz {gewinner_rang_vorher}. Bei der letzten {wahlorgan}swahl hatte {gewinner_partei_alt} hier die meisten Stimmen bekommen ({gewinner_prozent_alt} Prozent), das ist eine Veränderung von {gewinner_alt_differenz} Prozentpunkten."
+        "text": "{gewinner_partei} ist damit bei der {wahlorgan}swahl neue stärkste Kraft in {name}. Bei der vorherigen Wahl lag {gewinner_pronomen} mit {gewinner_ergebnis_alt} Prozent der Stimmen auf Platz {gewinner_rang_vorher}. Bei der letzten {wahlorgan}swahl hatte {gewinner_partei_alt} hier die meisten Stimmen bekommen ({gewinner_prozent_alt} Prozent)."
     },
 
     # --- Gleiche stärkste Kraft: Gewinner war 2021 nicht angetreten ---
