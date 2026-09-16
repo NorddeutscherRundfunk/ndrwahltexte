@@ -21,8 +21,28 @@ def build_shared_corrections():
     }
 
     # === LOCATION: in Kreis → im Kreis ===
-    corrections[r'\b([iI])n Kreis\b'] = {
-        "replacement": r"\1m Kreis",
+    corrections[r'\b([iI])n ([A-Za-zÄÖÜäöüß]+[Kk]reis)\b'] = {
+        "replacement": r"\1m \2",
+        "applies_to": None
+    } #applies to Kreis and Xyzkreis like Landkreis or Heidekreis
+
+    corrections[r'\b([iI])n Region\b'] = {
+        "replacement": r"\1n der Region",
+        "applies_to": None
+    }
+
+    corrections[r'\b([iI])n Wesermarsch\b'] = {
+        "replacement": r"\1n der Wesermarsch",
+        "applies_to": None
+    }
+
+    corrections[r'\b([iI])n Grafschaft\b'] = {
+        "replacement": r"\1n der Grafschaft",
+        "applies_to": None
+    }
+
+    corrections[r'\b([iI])n Emsland\b'] = {
+        "replacement": r"\1m Emsland",
         "applies_to": None
     }
 
@@ -68,11 +88,6 @@ def build_shared_corrections():
     # === Miscellaneous spelling corrections ===
     corrections[r'Abgeordnetenhausswahl'] = {
         "replacement": "Abgeordnetenhauswahl",
-        "applies_to": None
-    }
-
-    corrections[r'in Emsland'] = {
-        "replacement": "im Emsland",
         "applies_to": None
     }
 
