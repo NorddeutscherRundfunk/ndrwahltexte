@@ -153,9 +153,23 @@ TEMPLATES = {
             "hat_vorwahlergebnis == True",
             "gewinner_prozent != zweite_prozent",
             "gewinner_partei == gewinner_partei_alt",
+            "gewinner_prozent != gewinner_prozent_alt",
         ],
         "grammar": ["nominativ"],
         "text": "{gewinner_partei} hat damit im Vergleich zur vorherigen {wahlorgan}swahl in {name} das Ergebnis {change_phrase}. Die Veränderung bei den Stimmen beträgt {gewinner_differenz} Prozentpunkte."
+    },
+
+    # --- Gleiche stärkste Kraft: Ergebnis unverändert ---
+    "absatz2_gleiche_kraft_unveraendert": {
+        "topic": "absatz2",
+        "conditions": [
+            "hat_vorwahlergebnis == True",
+            "gewinner_prozent != zweite_prozent",
+            "gewinner_partei == gewinner_partei_alt",
+            "gewinner_prozent == gewinner_prozent_alt",
+        ],
+        "grammar": ["nominativ"],
+        "text": "{gewinner_partei} hat damit im Vergleich zur vorherigen {wahlorgan}swahl in {name} das Ergebnis gehalten."
     },
 
     # --- Größter Stimmenzuwachs (nur wenn Zuwachspartei != Gewinner) ---
