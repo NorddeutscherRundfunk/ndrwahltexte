@@ -51,6 +51,6 @@ def generate_election_text(variables: Dict) -> Dict[str, str]:
 
     return {
         'Titel': titel,
-        'Absatz1': absatz1
-        'Absatz2': absatz2
+        'Absatz1': absatz1,
+        'Absatz2': absatz2,
     }
