@@ -117,6 +117,7 @@ TEMPLATES = {
             "gewinner_prozent != zweite_prozent",
             "gewinner_rang_vorher == 'nicht angetreten'",
         ],
+        "grammar": ["nominativ"],
         "text": "{gewinner_partei} ist damit bei der {wahlorgan}swahl neue stärkste Kraft in {name}. Bei der vorherigen {wahlorgan}swahl ist {gewinner_partei} nicht angetreten. Bei der vorherigen {wahlorgan}swahl hatte {gewinner_partei_alt} hier die meisten Stimmen bekommen ({gewinner_prozent_alt} Prozent), das ist eine Veränderung von {gewinner_alt_differenz} Prozentpunkten."
     },
 
@@ -129,6 +130,7 @@ TEMPLATES = {
             "gewinner_prozent != zweite_prozent",
             "gewinner_rang_vorher != 'nicht angetreten'",
         ],
+        "grammar": ["nominativ"],
         "text": "{gewinner_partei} ist damit bei der {wahlorgan}swahl neue stärkste Kraft in {name}. Bei der vorherigen Wahl lag {gewinner_pronomen} mit {gewinner_ergebnis_alt} Prozent der Stimmen auf Platz {gewinner_rang_vorher}. Bei der letzten {wahlorgan}swahl hatte {gewinner_partei_alt} hier die meisten Stimmen bekommen ({gewinner_prozent_alt} Prozent), das ist eine Veränderung von {gewinner_alt_differenz} Prozentpunkten."
     },
 
@@ -139,6 +141,7 @@ TEMPLATES = {
             "hat_vorwahlergebnis == True",
             "gewinner_rang_vorher == 'nicht angetreten'",
         ],
+        "grammar": ["nominativ"],
         "text": "{gewinner_partei} war vorherigen {wahlorgan}swahl nicht angetreten, erhielt aber aus dem Stand die meisten Stimmen."
     },
 
@@ -151,6 +154,7 @@ TEMPLATES = {
             "gewinner_rang_vorher != 'nicht angetreten'",
             "gewinner_prozent != gewinner_prozent_alt",
         ],
+        "grammar": ["nominativ"],
         "text": "{gewinner_partei} hat damit im Vergleich zur vorherigen {wahlorgan}swahl in {name} das Ergebnis {change_phrase}. Die Veränderung bei den Stimmen beträgt {gewinner_differenz} Prozentpunkte."
     },
 
@@ -163,6 +167,7 @@ TEMPLATES = {
             "gewinner_rang_vorher != 'nicht angetreten'",
             "gewinner_prozent == gewinner_prozent_alt",
         ],
+        "grammar": ["nominativ"],
         "text": "Das Ergebnis von {gewinner_partei} ist im Vergleich zur vorherigen {wahlorgan}swahl in {name} unverändert geblieben."
     },
 
@@ -173,6 +178,7 @@ TEMPLATES = {
             "hat_vorwahlergebnis == True",
             "gewinner_partei != meist_zugewinn_partei",
         ],
+        "grammar": ["nominativ"],
         "text": "{meist_zugewinn_partei} verzeichnet den größten Stimmenzuwachs ({meist_zugewinn_prozent} Prozentpunkte) in {name}."
     },
 
@@ -183,6 +189,7 @@ TEMPLATES = {
             "hat_vorwahlergebnis == True",
             "gewinner_partei != meist_verlust_partei",
         ],
+        "grammar": ["nominativ"],
         "text": "{meist_verlust_partei} hat dort mit {meist_verlust_prozent} Prozentpunkten die größten Verluste zu verzeichnen."
     },
 }
