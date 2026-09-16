@@ -99,8 +99,87 @@ TEMPLATES = {
         "topic": "absatz1",
         "conditions": [],
         "text": "Die Wahlbeteiligung lag bei {wahlbeteiligung} Prozent."
-    }
+    },
+
+    # --- Kein Vorwahlergebnis vorhanden ---
+    "absatz2_kein_vorwahlergebnis": {
+        "topic": "absatz2",
+        "conditions": ["hat_vorwahlergebnis == False"],
+        "text": "Für {name} liegt kein Ergebnis der vorherigen {wahlorgan}swahl vor. Entweder es gab diese Gemeinde damals noch nicht oder sie wurde für die Wahl mit einer anderen zusammengelegt, weil sie zu klein war, oder es liegt ein anderer Fehler vor."
+    },
+
+    # --- Neue stärkste Kraft: Gewinner vorher nicht angetreten ---
+    "absatz2_neue_kraft_nicht_angetreten": {
+        "topic": "absatz2",
+        "conditions": [
+            "hat_vorwahlergebnis == True",
+            "gewinner_partei != gewinner_partei_alt",
+            "gewinner_prozent != zweite_prozent",
+            "gewinner_rang_vorher == 'nicht angetreten'",
+        ],
+        "text": "{gewinner_partei} ist damit bei der {wahlorgan}swahl neue stärkste Kraft in {name}. Bei der vorherigen {wahlorgan}swahl ist {gewinner_partei} nicht angetreten. Bei der vorherigen {wahlorgan}swahl hatte {gewinner_partei_alt} hier die meisten Stimmen bekommen ({gewinner_prozent_alt} Prozent), das ist eine Veränderung von {gewinner_differenz_alt} Prozentpunkten."
+    },
+
+    # --- Neue stärkste Kraft: Gewinner vorher auf Platz X ---
+    "absatz2_neue_kraft_mit_rang": {
+        "topic": "absatz2",
+        "conditions": [
+            "hat_vorwahlergebnis == True",
+            "gewinner_partei != gewinner_partei_alt",
+            "gewinner_prozent != zweite_prozent",
+            "gewinner_rang_vorher != 'nicht angetreten'",
+        ],
+        "text": "{gewinner_partei} ist damit bei der {wahlorgan}swahl neue stärkste Kraft in {name}. Bei der vorherigen Wahl lag {gewinner_pronomen} mit {gewinner_ergebnis_vorher} Prozent der Zweitstimmen auf Platz {gewinner_rang_vorher}. Bei der letzten {wahlorgan}swahl hatte {gewinner_partei_alt} hier die meisten Stimmen bekommen ({gewinner_prozent_alt} Prozent), das ist eine Veränderung von {gewinner_differenz_alt} Prozentpunkten."
+    },
+
+    # --- Gleiche stärkste Kraft: Gewinner war 2021 nicht angetreten ---
+    "absatz2_gleiche_kraft_nicht_angetreten": {
+        "topic": "absatz2",
+        "conditions": [
+            "hat_vorwahlergebnis == True",
+            "gewinner_partei == gewinner_partei_alt or gewinner_prozent == zweite_prozent",
+            "gewinner_rang_vorher == 'nicht angetreten'",
+        ],
+        "text": "{gewinner_partei} war vorherigen {wahlorgan}swahl nicht angetreten, erhielt aber aus dem Stand die meisten Zweitstimmen."
+    },
+
+    # --- Gleiche stärkste Kraft: Ergebnisvergleich ---
+    "absatz2_gleiche_kraft_vergleich": {
+        "topic": "absatz2",
+        "conditions": [
+            "hat_vorwahlergebnis == True",
+            "gewinner_partei == gewinner_partei_alt or gewinner_prozent == zweite_prozent",
+            "gewinner_rang_vorher != 'nicht angetreten'",
+        ],
+        "text": "{gewinner_partei} hat damit im Vergleich zur vorherigen {wahlorgan}swahl in {name} das Ergebnis {change_adverb}{change_verb}. Die Veränderung bei den Zweitstimmen beträgt {gewinner_differenz} Prozentpunkte."
+    },
+
+    # --- Größter Stimmenzuwachs (nur wenn Zuwachspartei != Gewinner und Gewinner vorher angetreten) ---
+    "absatz2_meist_zugewinn": {
+        "topic": "absatz2",
+        "conditions": [
+            "hat_vorwahlergebnis == True",
+            "gewinner_partei == gewinner_partei_alt or gewinner_prozent == zweite_prozent",
+            "gewinner_rang_vorher != 'nicht angetreten'",
+            "gewinner_partei != meist_zugewinn_partei",
+        ],
+        "text": "{meist_zugewinn_partei} verzeichnet den größten Stimmenzuwachs ({meist_zugewinn_prozent} Prozentpunkte) in {name}."
+    },
+
+    # --- Größte Verluste (nur wenn Verlustpartei != Gewinner) ---
+    "absatz2_meist_verlust": {
+        "topic": "absatz2",
+        "conditions": [
+            "hat_vorwahlergebnis == True",
+            "gewinner_partei == gewinner_partei_alt or gewinner_prozent == zweite_prozent",
+            "gewinner_rang_vorher != 'nicht angetreten'",
+            "gewinner_partei != meist_verlust_partei",
+        ],
+        "text": "{meist_verlust_partei} hat dort mit {meist_verlust_prozent} Prozentpunkten die größten Verluste zu verzeichnen."
+    },
 }
+
+
 
 # Optional: Template-specific corrections (rarely needed)
 # These only apply to templates in THIS file
