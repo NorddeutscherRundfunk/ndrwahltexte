@@ -129,7 +129,7 @@ TEMPLATES = {
             "gewinner_prozent != zweite_prozent",
             "gewinner_rang_vorher != 'nicht angetreten'",
         ],
-        "text": "{gewinner_partei} ist damit bei der {wahlorgan}swahl neue stärkste Kraft in {name}. Bei der vorherigen Wahl lag {gewinner_pronomen} mit {gewinner_ergebnis_vorher} Prozent der Zweitstimmen auf Platz {gewinner_rang_vorher}. Bei der letzten {wahlorgan}swahl hatte {gewinner_partei_alt} hier die meisten Stimmen bekommen ({gewinner_prozent_alt} Prozent), das ist eine Veränderung von {gewinner_differenz_alt} Prozentpunkten."
+        "text": "{gewinner_partei} ist damit bei der {wahlorgan}swahl neue stärkste Kraft in {name}. Bei der vorherigen Wahl lag {gewinner_pronomen} mit {gewinner_ergebnis_vorher} Prozent der Stimmen auf Platz {gewinner_rang_vorher}. Bei der letzten {wahlorgan}swahl hatte {gewinner_partei_alt} hier die meisten Stimmen bekommen ({gewinner_prozent_alt} Prozent), das ist eine Veränderung von {gewinner_differenz_alt} Prozentpunkten."
     },
 
     # --- Gleiche stärkste Kraft: Gewinner war 2021 nicht angetreten ---
@@ -137,10 +137,9 @@ TEMPLATES = {
         "topic": "absatz2",
         "conditions": [
             "hat_vorwahlergebnis == True",
-            "gewinner_partei == gewinner_partei_alt",
             "gewinner_rang_vorher == 'nicht angetreten'",
         ],
-        "text": "{gewinner_partei} war vorherigen {wahlorgan}swahl nicht angetreten, erhielt aber aus dem Stand die meisten Zweitstimmen."
+        "text": "{gewinner_partei} war vorherigen {wahlorgan}swahl nicht angetreten, erhielt aber aus dem Stand die meisten Stimmen."
     },
 
     # --- Gleiche stärkste Kraft: Ergebnisvergleich ---
@@ -151,7 +150,7 @@ TEMPLATES = {
             "gewinner_partei == gewinner_partei_alt",
             "gewinner_rang_vorher != 'nicht angetreten'",
         ],
-        "text": "{gewinner_partei} hat damit im Vergleich zur vorherigen {wahlorgan}swahl in {name} das Ergebnis {change_adverb}{change_verb}. Die Veränderung bei den Zweitstimmen beträgt {gewinner_differenz} Prozentpunkte."
+        "text": "{gewinner_partei} hat damit im Vergleich zur vorherigen {wahlorgan}swahl in {name} das Ergebnis {change_adverb}{change_verb}. Die Veränderung bei den Stimmen beträgt {gewinner_differenz} Prozentpunkte."
     },
 
     # --- Größter Stimmenzuwachs (nur wenn Zuwachspartei != Gewinner und Gewinner vorher angetreten) ---
@@ -159,8 +158,6 @@ TEMPLATES = {
         "topic": "absatz2",
         "conditions": [
             "hat_vorwahlergebnis == True",
-            "gewinner_partei == gewinner_partei_alt or gewinner_prozent == zweite_prozent",
-            "gewinner_rang_vorher != 'nicht angetreten'",
             "gewinner_partei != meist_zugewinn_partei",
         ],
         "text": "{meist_zugewinn_partei} verzeichnet den größten Stimmenzuwachs ({meist_zugewinn_prozent} Prozentpunkte) in {name}."
@@ -171,8 +168,6 @@ TEMPLATES = {
         "topic": "absatz2",
         "conditions": [
             "hat_vorwahlergebnis == True",
-            "gewinner_partei == gewinner_partei_alt or gewinner_prozent == zweite_prozent",
-            "gewinner_rang_vorher != 'nicht angetreten'",
             "gewinner_partei != meist_verlust_partei",
         ],
         "text": "{meist_verlust_partei} hat dort mit {meist_verlust_prozent} Prozentpunkten die größten Verluste zu verzeichnen."
