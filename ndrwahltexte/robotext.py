@@ -8,8 +8,32 @@
 #########################
 import random
 import re
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Any
 from simpleeval import simple_eval
+
+def is_valid(value: Any) -> bool:
+    """
+    Check whether a template variable holds a usable value.
+
+    Only None and NaN disqualify a variable. Zero, empty strings and False are
+    legitimate content — gewinner_differenz is 0 when a party polls identically
+    to last time, change_adverb is '' when no intensifier applies.
+
+    Args:
+        value: The variable value to check
+
+    Returns:
+        False if the value is None or NaN, True otherwise
+    """
+    if value is None:
+        return False
+
+    # NaN is the only value that compares unequal to itself. This catches
+    # float('nan'), np.float64('nan') and pd.NA-style missing values alike.
+    if value != value:
+        return False
+
+    return True
 
 #functions that are safe to be used in the conditions of templates
 SAFE_FUNCTIONS = {
@@ -21,7 +45,8 @@ SAFE_FUNCTIONS = {
         "abs": abs,
         "sorted": sorted,
         "int": int,
-        "float": float
+        "float": float,
+        "is_valid": is_valid
     }
 
 class TemplateEngine:
@@ -69,10 +94,12 @@ class TemplateEngine:
             This means that sentences that are to always be used can be templated
             without a condition
         """
-        #print(template_text)
-        matches = re.findall(r'\{([^}]+)\}', template_text)
-        #print(matches)
-        conditions.extend(matches)
+        matches = re.findall(r'\{([a-zA-Z_][a-zA-Z0-9_]*)\}', template_text)
+
+        # Copy before extending — the list belongs to the template dictionary and
+        # mutating it would accumulate entries across municipalities.
+        conditions = list(conditions)
+        conditions.extend(f"is_valid({placeholder_name})" for placeholder_name in matches)
 
         if not conditions:
             return True
