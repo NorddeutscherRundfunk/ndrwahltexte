@@ -150,7 +150,7 @@ TEMPLATES = {
             "gewinner_partei == gewinner_partei_alt",
             "gewinner_rang_vorher != 'nicht angetreten'",
         ],
-        "text": "{gewinner_partei} hat damit im Vergleich zur vorherigen {wahlorgan}swahl in {name} das Ergebnis {change_adverb}{change_verb}. Die Veränderung bei den Stimmen beträgt {gewinner_differenz} Prozentpunkte."
+        "text": "{gewinner_partei} hat damit im Vergleich zur vorherigen {wahlorgan}swahl in {name} das Ergebnis {change_phrase}. Die Veränderung bei den Stimmen beträgt {gewinner_differenz} Prozentpunkte."
     },
 
     # --- Größter Stimmenzuwachs (nur wenn Zuwachspartei != Gewinner und Gewinner vorher angetreten) ---
