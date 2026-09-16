@@ -137,7 +137,7 @@ TEMPLATES = {
         "topic": "absatz2",
         "conditions": [
             "hat_vorwahlergebnis == True",
-            "gewinner_partei == gewinner_partei_alt or gewinner_prozent == zweite_prozent",
+            "gewinner_partei == gewinner_partei_alt",
             "gewinner_rang_vorher == 'nicht angetreten'",
         ],
         "text": "{gewinner_partei} war vorherigen {wahlorgan}swahl nicht angetreten, erhielt aber aus dem Stand die meisten Zweitstimmen."
@@ -148,7 +148,7 @@ TEMPLATES = {
         "topic": "absatz2",
         "conditions": [
             "hat_vorwahlergebnis == True",
-            "gewinner_partei == gewinner_partei_alt or gewinner_prozent == zweite_prozent",
+            "gewinner_partei == gewinner_partei_alt",
             "gewinner_rang_vorher != 'nicht angetreten'",
         ],
         "text": "{gewinner_partei} hat damit im Vergleich zur vorherigen {wahlorgan}swahl in {name} das Ergebnis {change_adverb}{change_verb}. Die Veränderung bei den Zweitstimmen beträgt {gewinner_differenz} Prozentpunkte."
