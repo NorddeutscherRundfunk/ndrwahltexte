@@ -139,6 +139,7 @@ TEMPLATES = {
         "topic": "absatz2",
         "conditions": [
             "hat_vorwahlergebnis == True",
+            "gewinner_prozent != zweite_prozent",
             "gewinner_rang_vorher == 'nicht angetreten'",
         ],
         "grammar": ["nominativ"],
@@ -150,8 +151,8 @@ TEMPLATES = {
         "topic": "absatz2",
         "conditions": [
             "hat_vorwahlergebnis == True",
+            "gewinner_prozent != zweite_prozent",
             "gewinner_partei == gewinner_partei_alt",
-            "gewinner_rang_vorher != 'nicht angetreten'",
             "gewinner_prozent != gewinner_prozent_alt",
         ],
         "grammar": ["nominativ"],
@@ -163,20 +164,20 @@ TEMPLATES = {
         "topic": "absatz2",
         "conditions": [
             "hat_vorwahlergebnis == True",
+            "gewinner_prozent != zweite_prozent",
             "gewinner_partei == gewinner_partei_alt",
-            "gewinner_rang_vorher != 'nicht angetreten'",
             "gewinner_prozent == gewinner_prozent_alt",
         ],
         "grammar": ["nominativ"],
         "text": "Das Ergebnis von {gewinner_partei} ist im Vergleich zur vorherigen {wahlorgan}swahl in {name} unverändert geblieben."
     },
 
-    # --- Größter Stimmenzuwachs (nur wenn Zuwachspartei != Gewinner und Gewinner vorher angetreten) ---
+    # --- Größter Stimmenzuwachs (nur wenn Zuwachspartei != Gewinner) ---
     "absatz2_meist_zugewinn": {
         "topic": "absatz2",
         "conditions": [
             "hat_vorwahlergebnis == True",
-            "gewinner_partei != meist_zugewinn_partei",
+            "gewinner_partei != meist_zugewinn_partei or gewinner_prozent == zweite_prozent",
         ],
         "grammar": ["nominativ"],
         "text": "{meist_zugewinn_partei} verzeichnet den größten Stimmenzuwachs ({meist_zugewinn_prozent} Prozentpunkte) in {name}."
@@ -187,7 +188,7 @@ TEMPLATES = {
         "topic": "absatz2",
         "conditions": [
             "hat_vorwahlergebnis == True",
-            "gewinner_partei != meist_verlust_partei",
+            "gewinner_partei != meist_verlust_partei or gewinner_prozent == zweite_prozent",
         ],
         "grammar": ["nominativ"],
         "text": "{meist_verlust_partei} hat dort mit {meist_verlust_prozent} Prozentpunkten die größten Verluste zu verzeichnen."
