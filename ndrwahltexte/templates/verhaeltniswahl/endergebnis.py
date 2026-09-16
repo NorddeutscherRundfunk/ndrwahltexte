@@ -117,7 +117,7 @@ TEMPLATES = {
             "gewinner_prozent != zweite_prozent",
             "gewinner_rang_vorher == 'nicht angetreten'",
         ],
-        "text": "{gewinner_partei} ist damit bei der {wahlorgan}swahl neue stärkste Kraft in {name}. Bei der vorherigen {wahlorgan}swahl ist {gewinner_partei} nicht angetreten. Bei der vorherigen {wahlorgan}swahl hatte {gewinner_partei_alt} hier die meisten Stimmen bekommen ({gewinner_prozent_alt} Prozent), das ist eine Veränderung von {gewinner_differenz_alt} Prozentpunkten."
+        "text": "{gewinner_partei} ist damit bei der {wahlorgan}swahl neue stärkste Kraft in {name}. Bei der vorherigen {wahlorgan}swahl ist {gewinner_partei} nicht angetreten. Bei der vorherigen {wahlorgan}swahl hatte {gewinner_partei_alt} hier die meisten Stimmen bekommen ({gewinner_prozent_alt} Prozent), das ist eine Veränderung von {gewinner_alt_differenz} Prozentpunkten."
     },
 
     # --- Neue stärkste Kraft: Gewinner vorher auf Platz X ---
@@ -129,7 +129,7 @@ TEMPLATES = {
             "gewinner_prozent != zweite_prozent",
             "gewinner_rang_vorher != 'nicht angetreten'",
         ],
-        "text": "{gewinner_partei} ist damit bei der {wahlorgan}swahl neue stärkste Kraft in {name}. Bei der vorherigen Wahl lag {gewinner_pronomen} mit {gewinner_ergebnis_vorher} Prozent der Stimmen auf Platz {gewinner_rang_vorher}. Bei der letzten {wahlorgan}swahl hatte {gewinner_partei_alt} hier die meisten Stimmen bekommen ({gewinner_prozent_alt} Prozent), das ist eine Veränderung von {gewinner_differenz_alt} Prozentpunkten."
+        "text": "{gewinner_partei} ist damit bei der {wahlorgan}swahl neue stärkste Kraft in {name}. Bei der vorherigen Wahl lag {gewinner_pronomen} mit {gewinner_ergebnis_alt} Prozent der Stimmen auf Platz {gewinner_rang_vorher}. Bei der letzten {wahlorgan}swahl hatte {gewinner_partei_alt} hier die meisten Stimmen bekommen ({gewinner_prozent_alt} Prozent), das ist eine Veränderung von {gewinner_alt_differenz} Prozentpunkten."
     },
 
     # --- Gleiche stärkste Kraft: Gewinner war 2021 nicht angetreten ---
@@ -149,8 +149,21 @@ TEMPLATES = {
             "hat_vorwahlergebnis == True",
             "gewinner_partei == gewinner_partei_alt",
             "gewinner_rang_vorher != 'nicht angetreten'",
+            "gewinner_prozent != gewinner_prozent_alt",
         ],
         "text": "{gewinner_partei} hat damit im Vergleich zur vorherigen {wahlorgan}swahl in {name} das Ergebnis {change_phrase}. Die Veränderung bei den Stimmen beträgt {gewinner_differenz} Prozentpunkte."
+    },
+
+    # --- Gleiche stärkste Kraft: Ergebnis unverändert ---
+    "absatz2_gleiche_kraft_unveraendert": {
+        "topic": "absatz2",
+        "conditions": [
+            "hat_vorwahlergebnis == True",
+            "gewinner_partei == gewinner_partei_alt",
+            "gewinner_rang_vorher != 'nicht angetreten'",
+            "gewinner_prozent == gewinner_prozent_alt",
+        ],
+        "text": "Das Ergebnis von {gewinner_partei} ist im Vergleich zur vorherigen {wahlorgan}swahl in {name} unverändert geblieben."
     },
 
     # --- Größter Stimmenzuwachs (nur wenn Zuwachspartei != Gewinner und Gewinner vorher angetreten) ---
