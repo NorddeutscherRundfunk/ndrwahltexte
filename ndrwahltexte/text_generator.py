@@ -41,7 +41,7 @@ def generate_election_text(variables: Dict) -> Dict[str, str]:
 
     # Generate second paragraph
     absatz2_selected = engine.select_templates(filter_topic="absatz2")
-    absatz2 = engine.build_text(absatz1_selected)
+    absatz2 = engine.build_text(absatz2_selected)
 
     # Validate output
     if not titel or not titel.strip() or not absatz1 or not absatz1.strip():
